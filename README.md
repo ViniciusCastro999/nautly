@@ -18,6 +18,14 @@
 </p>
 
 <p align="center">
+  <a href="https://nautly.vercel.app"><b>Acessar o site: nautly.vercel.app</b></a>
+</p>
+
+<p align="center">
+  <sub>Contas de demonstração (senha <code>demo12345</code>): <code>demo@nautly.dev</code> (nutrição) e <code>demo-dentista@nautly.dev</code> (odontologia)</sub>
+</p>
+
+<p align="center">
   <img src="docs/screenshots/landing.webp" alt="Página inicial do Nautly" width="900" />
 </p>
 
@@ -233,7 +241,7 @@ Abra http://localhost:3000.
 
 **Conta demo:** `demo@nautly.dev` / `demo12345` (nutricionista com prontuários, anamneses, 5 meses de evolução de medidas do Pedro Alves, retornos quinzenais, uma falta e um recibo emitido)
 **Conta demo de dentista:** `demo-dentista@nautly.dev` / `demo12345` (odontograma de adulto e de criança, plano de tratamento aprovado e em andamento, outro aguardando aprovação, recibo, receita e atestado)
-**Página pública de exemplo:** http://localhost:3000/ana-souza
+**Página pública de exemplo:** http://localhost:3000/ana-souza (no ar: https://nautly.vercel.app/ana-souza)
 
 > O PGlite permite apenas um processo por vez. Pare o `npm run dev` antes de rodar `npm run db:seed` novamente.
 
@@ -250,6 +258,10 @@ Abra http://localhost:3000.
 | `npm run db:migrate`    | Aplica migrações                                                                                                            |
 | `npm run db:seed`       | Recria as contas demo com dados de exemplo                                                                                  |
 | `npm run storage:check` | Grava e lê um arquivo de teste no armazenamento configurado                                                                 |
+
+### Em produção
+
+O site em https://nautly.vercel.app roda na Vercel, com banco Postgres no Neon e anexos no Vercel Blob (modo privado). Cada push na `main` publica uma nova versão. Variáveis necessárias: `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `DATA_ENCRYPTION_KEY` e `BLOB_STORE_ID` (criada pela integração do Blob).
 
 ## Estrutura
 
