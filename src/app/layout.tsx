@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: { default: "Nautly Agendamentos · Agenda online para consultórios", template: "%s · Nautly" },
   applicationName: "Nautly Agendamentos",
   description:
-    "Compartilhe seu link, deixe clientes escolherem um horário livre e pare de negociar agenda por mensagem.",
+    "Agenda online e ficha do paciente no mesmo lugar. Seus pacientes marcam no horário que funciona para eles, e você ganha tempo para cuidar de cada um.",
 }
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

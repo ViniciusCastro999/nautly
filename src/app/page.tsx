@@ -70,11 +70,12 @@ export default async function Home() {
           <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:py-24">
             <div>
               <h1 className="text-4xl leading-[1.1] font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-                Agendamento fácil, <span className="text-primary">sem troca de mensagens</span>
+                Sua agenda em ordem, <span className="text-primary">mais tempo para cuidar</span>
               </h1>
               <p className="mt-6 max-w-lg text-lg text-muted-foreground">
-                Compartilhe seu link, deixe as pessoas escolherem um horário livre e receba tudo organizado na
-                sua agenda. Feito para profissionais autônomos e consultórios.
+                Seus pacientes escolhem o horário que funciona para eles, a qualquer hora, e você chega a cada
+                consulta com a ficha, o histórico e os documentos à mão. Feito para profissionais autônomos e
+                consultórios.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Button asChild size="lg" className="h-12 rounded-full px-7 text-base font-semibold">
@@ -198,9 +199,8 @@ export default async function Home() {
                 Nautly para consultórios
               </h2>
               <p className="mt-4 max-w-lg text-white/75">
-                A arquitetura já é multi-tenant: uma clínica é uma organização com vários profissionais, cada
-                um com sua agenda. Próximos passos: agenda da equipe, ficha de pacientes, salas e lembretes
-                por WhatsApp.
+                Toda a equipe no mesmo lugar: cada profissional com a própria agenda, a recepção cuidando dos
+                horários e o histórico de cada paciente disponível para quem atende.
               </p>
             </div>
             <ul className="grid gap-3">
@@ -225,7 +225,7 @@ export default async function Home() {
       <footer className="border-t py-8">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 text-sm text-muted-foreground sm:flex-row sm:px-6">
           <Logo className="scale-90" />
-          <p>Projeto de portfólio. Feito com Next.js, shadcn/ui, Drizzle e Postgres.</p>
+          <p>Agenda e gestão para consultórios.</p>
         </div>
       </footer>
     </div>

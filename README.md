@@ -23,7 +23,7 @@
 
 ## A ideia
 
-Quem atende com hora marcada perde tempo negociando horário por mensagem: "tem amanhã às 10?", "não, só às 15", "pode ser quinta?". O Nautly resolve isso do jeito que ferramentas como o Calendly resolvem: o profissional define quando atende, compartilha um link e o paciente escolhe sozinho um horário livre.
+Quem atende com hora marcada gasta boa parte do dia organizando a agenda, quando poderia estar cuidando das pessoas. No Nautly, o profissional define quando atende e compartilha um link; o paciente escolhe o horário que funciona melhor para ele, a qualquer hora do dia. A conversa entre os dois continua do mesmo jeito. O que sai da rotina é o trabalho de encaixar horários.
 
 Só que, para um consultório, a agenda é só o começo. Uma nutricionista precisa acompanhar o peso do paciente ao longo dos meses, um psicólogo precisa de sessões semanais recorrentes e controle de faltas, um dentista precisa de odontograma e de orçamento aprovado antes de começar o tratamento. Hoje isso vive espalhado entre Google Agenda, planilhas, WhatsApp e papel.
 
@@ -43,8 +43,6 @@ A tela fica limpa para cada negócio, e o mesmo código atende todos eles. A pro
 | Medicina                | Prontuário, anexos de exames, atestado e receituário                                  |
 | Fisioterapia e Estética | Planos de tratamento por sessões e procedimentos                                      |
 | Salão                   | Agenda e cadastro de clientes, sem módulos clínicos                                   |
-
-> Projeto de portfólio. Pagamentos e planos de assinatura ficaram de propósito para o fim do roadmap.
 
 ## Telas
 
