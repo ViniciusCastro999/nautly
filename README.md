@@ -72,9 +72,9 @@ A tela fica limpa para cada negócio, e o mesmo código atende todos eles. A pro
 <p align="center">
   <img src="docs/screenshots/public-budget.webp" alt="Orçamento no celular" width="260" />
   &nbsp;&nbsp;
-  <img src="docs/screenshots/pdf-orcamento.webp" alt="Orçamento em PDF" width="300" />
+  <img src="docs/screenshots/pdf-orcamento.webp" alt="Orçamento em PDF" width="380" />
   &nbsp;&nbsp;
-  <img src="docs/screenshots/pdf-receituario.webp" alt="Receituário em PDF" width="300" />
+  <img src="docs/screenshots/pdf-receituario.webp" alt="Receituário em PDF" width="380" />
 </p>
 <p align="center"><sub>O paciente aprova o orçamento pelo celular, e os documentos saem em PDF numerado.</sub></p>
 
