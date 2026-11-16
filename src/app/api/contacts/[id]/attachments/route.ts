@@ -25,7 +25,7 @@ export async function POST(request: Request, { params }: RouteContext<"/api/cont
     return NextResponse.json({ error: "Selecione um arquivo." }, { status: 400 })
   }
   if (file.size > MAX_UPLOAD_BYTES) {
-    return NextResponse.json({ error: "O arquivo deve ter até 10 MB." }, { status: 400 })
+    return NextResponse.json({ error: "O arquivo deve ter até 4 MB." }, { status: 400 })
   }
   if (!ALLOWED_MIME_TYPES.has(file.type)) {
     return NextResponse.json({ error: "Formato não suportado. Envie PDF ou imagem." }, { status: 400 })

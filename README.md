@@ -118,17 +118,18 @@ A tela fica limpa para cada negócio, e o mesmo código atende todos eles. A pro
 
 ## Stack
 
-| Camada       | Tecnologia                                                    |
-| ------------ | ------------------------------------------------------------- |
-| Framework    | Next.js 16 (App Router, Server Components, Server Actions)    |
-| UI           | shadcn/ui (Radix), Tailwind CSS v4, lucide-react, next-themes |
-| Banco        | PostgreSQL com Drizzle ORM (PGlite em desenvolvimento)        |
-| Autenticação | Better Auth (e-mail/senha + plugin de username)               |
-| Datas        | date-fns + @date-fns/tz                                       |
-| Validação    | Zod                                                           |
-| Gráficos     | Recharts (componente chart do shadcn/ui)                      |
-| PDF          | pdf-lib                                                       |
-| Testes       | node:test via tsx                                             |
+| Camada       | Tecnologia                                                      |
+| ------------ | --------------------------------------------------------------- |
+| Framework    | Next.js 16 (App Router, Server Components, Server Actions)      |
+| UI           | shadcn/ui (Radix), Tailwind CSS v4, lucide-react, next-themes   |
+| Banco        | PostgreSQL com Drizzle ORM (PGlite em desenvolvimento)          |
+| Autenticação | Better Auth (e-mail/senha + plugin de username)                 |
+| Datas        | date-fns + @date-fns/tz                                         |
+| Validação    | Zod                                                             |
+| Gráficos     | Recharts (componente chart do shadcn/ui)                        |
+| PDF          | pdf-lib                                                         |
+| Arquivos     | Vercel Blob privado em produção, disco local em desenvolvimento |
+| Testes       | node:test via tsx                                               |
 
 ## Decisões técnicas
 
@@ -150,7 +151,7 @@ Cada membro da organização tem um papel (`owner`, `admin`, `professional`, `re
 
 - Texto do prontuário e arquivos anexados são criptografados com AES-256-GCM antes de ir para o banco ou disco ([`crypto.ts`](src/lib/crypto.ts)), com a chave em `DATA_ENCRYPTION_KEY`
 - Downloads passam por uma rota autenticada que valida a organização, registra o acesso e responde com `no-store`
-- Upload aceita só PDF e imagens até 10 MB; o armazenamento é uma interface ([`storage.ts`](src/lib/storage.ts)) pronta para trocar o disco local por S3/R2
+- Upload aceita só PDF e imagens até 4 MB. O armazenamento é uma interface ([`storage.ts`](src/lib/storage.ts)) com dois adaptadores: disco local em desenvolvimento e Vercel Blob privado em produção, ambos guardando o arquivo já criptografado
 - Toda leitura de prontuário, criação de registro e acesso a anexo gera uma entrada em `access_log`
 
 ### Recorrência no horário local
@@ -240,16 +241,17 @@ Abra http://localhost:3000.
 
 ### Scripts
 
-| Script                | O que faz                                                                                                                   |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `npm run dev`         | Servidor de desenvolvimento                                                                                                 |
-| `npm run build`       | Build de produção                                                                                                           |
-| `npm test`            | 51 testes (horários, recorrência, anamnese, medidas, odontograma, orçamento, valores por extenso, PDFs, permissões, cripto) |
-| `npm run lint`        | ESLint                                                                                                                      |
-| `npm run typecheck`   | Checagem de tipos                                                                                                           |
-| `npm run db:generate` | Gera migração a partir do schema                                                                                            |
-| `npm run db:migrate`  | Aplica migrações                                                                                                            |
-| `npm run db:seed`     | Recria as contas demo com dados de exemplo                                                                                  |
+| Script                  | O que faz                                                                                                                   |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`           | Servidor de desenvolvimento                                                                                                 |
+| `npm run build`         | Build de produção                                                                                                           |
+| `npm test`              | 51 testes (horários, recorrência, anamnese, medidas, odontograma, orçamento, valores por extenso, PDFs, permissões, cripto) |
+| `npm run lint`          | ESLint                                                                                                                      |
+| `npm run typecheck`     | Checagem de tipos                                                                                                           |
+| `npm run db:generate`   | Gera migração a partir do schema                                                                                            |
+| `npm run db:migrate`    | Aplica migrações                                                                                                            |
+| `npm run db:seed`       | Recria as contas demo com dados de exemplo                                                                                  |
+| `npm run storage:check` | Grava e lê um arquivo de teste no armazenamento configurado                                                                 |
 
 ## Estrutura
 

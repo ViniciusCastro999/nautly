@@ -112,7 +112,7 @@ export function AttachmentsPanel({
               <>
                 <p className="text-sm font-medium">Arraste um arquivo ou clique para escolher</p>
                 <p className="text-xs text-muted-foreground">
-                  PDF ou imagem, até 10 MB. Guardado com criptografia.
+                  PDF ou imagem, até 4 MB. Guardado com criptografia.
                 </p>
               </>
             )}
