@@ -2,8 +2,10 @@
 
 import { and, eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
+import { after } from "next/server"
 import { z } from "zod"
 import { db, schema } from "@/db"
+import { syncBookings } from "@/lib/google/calendar"
 import { createBooking, SlotUnavailableError } from "@/lib/scheduling/service"
 
 const bookingSchema = z.object({
@@ -39,6 +41,7 @@ export async function bookSlot(input: z.input<typeof bookingSchema>): Promise<Bo
       inviteeTimezone: data.timezone,
     })
     revalidatePath("/app/bookings")
+    after(() => syncBookings([booking.id]))
     return { ok: true, token: booking.manageToken }
   } catch (err) {
     if (err instanceof SlotUnavailableError) return { ok: false, error: err.message, slotTaken: true }
@@ -56,5 +59,6 @@ export async function cancelBookingByToken(token: string, reason: string) {
     .where(eq(schema.booking.id, booking.id))
   revalidatePath(`/booking/${token}`)
   revalidatePath("/app/bookings")
+  after(() => syncBookings([booking.id]))
   return { ok: true as const }
 }

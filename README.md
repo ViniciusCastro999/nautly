@@ -114,6 +114,7 @@ A tela fica limpa para cada negócio, e o mesmo código atende todos eles. A pro
 - Agendamentos em lista ou em calendário com visões de dia, semana e mês, com atalho para a ficha do paciente
 - Agendamento feito pelo profissional (encaixe fora da disponibilidade pública), com repetição semanal ou quinzenal; ocorrências que colidem com outro horário são puladas e informadas
 - Controle de presença (compareceu/faltou) e cancelamento de "esta e as próximas" em séries recorrentes
+- Integração com Google Calendar (Configurações → Integrações): cada agendamento vira um evento na agenda do profissional (e sai de lá se for cancelado), e os compromissos do Google bloqueiam horários na página pública. O Nautly só consulta os horários ocupados, sem ler o conteúdo dos outros eventos, e nenhum dado clínico vai para o Google
 - Tema claro, escuro ou do sistema
 
 **Para quem agenda (páginas públicas)**
@@ -263,6 +264,17 @@ Abra http://localhost:3000.
 
 O site em https://nautly.vercel.app roda na Vercel, com banco Postgres no Neon e anexos no Vercel Blob (modo privado). Cada push na `main` publica uma nova versão. Variáveis necessárias: `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `DATA_ENCRYPTION_KEY` e `BLOB_STORE_ID` (criada pela integração do Blob). As migrações do banco rodam sozinhas em cada deploy, antes do build ([`vercel.json`](vercel.json)).
 
+### Google Calendar
+
+A integração fica desligada até existirem `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET`. Para criar:
+
+1. No [Google Cloud Console](https://console.cloud.google.com/), crie (ou escolha) um projeto e ative a **Google Calendar API**
+2. Em **Google Auth Platform → Público-alvo**, configure a tela de consentimento como **Externo** e adicione os escopos `calendar.events` e `calendar.freebusy`. Enquanto o app estiver em modo de teste, só os e-mails cadastrados como usuários de teste conseguem conectar
+3. Em **Clientes**, crie um **ID do cliente OAuth** do tipo **Aplicativo da Web** com o URI de redirecionamento `https://nautly.vercel.app/api/integrations/google/callback` (e `http://localhost:3000/api/integrations/google/callback` para desenvolvimento)
+4. Coloque o ID e a chave secreta nas variáveis da Vercel (e no `.env` local) e faça um novo deploy
+
+Os tokens de cada profissional ficam criptografados no banco com a mesma chave do prontuário. Se o Google estiver fora do ar ou lento, a página de agendamento continua funcionando (sem o bloqueio dos compromissos externos) e o erro aparece na tela de Integrações.
+
 ## Estrutura
 
 ```
@@ -325,6 +337,6 @@ src/
 
 **Depois**
 
-- [ ] Sincronização com Google Calendar
+- [x] Sincronização com Google Calendar
 - [ ] Planos e cobrança
 - [ ] Constraint de exclusão (`tstzrange` + `btree_gist`) como segunda barreira contra sobreposição

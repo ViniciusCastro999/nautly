@@ -299,6 +299,8 @@ export const booking = pgTable(
     /** Comparecimento, marcado pelo profissional após o horário. */
     attendance: attendance("attendance"),
     seriesId: text("series_id").references(() => bookingSeries.id, { onDelete: "set null" }),
+    /** Evento correspondente no Google Calendar do profissional, quando sincronizado. */
+    googleEventId: text("google_event_id"),
     /** Token secreto para o convidado gerenciar (cancelar) sem login. */
     manageToken: text("manage_token")
       .notNull()
@@ -311,6 +313,37 @@ export const booking = pgTable(
     index("booking_series_idx").on(t.seriesId),
   ],
 )
+
+/* -------------------------------------------------------------------------- */
+/*                         Integração com Google Calendar                      */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Conta Google conectada por um profissional (uma por usuário). Os tokens
+ * ficam criptografados (AES-256-GCM), como o prontuário.
+ */
+export const calendarConnection = pgTable("calendar_connection", {
+  id: id(),
+  userId: text("user_id")
+    .notNull()
+    .unique()
+    .references(() => user.id, { onDelete: "cascade" }),
+  provider: text("provider").notNull().default("google"),
+  /** E-mail da conta Google, para mostrar na tela. */
+  accountEmail: text("account_email").notNull(),
+  accessTokenEncrypted: text("access_token_encrypted").notNull(),
+  refreshTokenEncrypted: text("refresh_token_encrypted").notNull(),
+  accessTokenExpiresAt: timestamp("access_token_expires_at", { withTimezone: true }).notNull(),
+  calendarId: text("calendar_id").notNull().default("primary"),
+  /** Cria, atualiza e remove eventos no Google a cada agendamento. */
+  pushBookings: boolean("push_bookings").notNull().default(true),
+  /** Compromissos do Google bloqueiam horários na página pública. */
+  blockBusy: boolean("block_busy").notNull().default(true),
+  /** Último erro de sincronização, para avisar na tela. */
+  lastError: text("last_error"),
+  createdAt: createdAt(),
+  updatedAt: updatedAt(),
+})
 
 /* -------------------------------------------------------------------------- */
 /*                         Prontuário, anexos, auditoria                       */

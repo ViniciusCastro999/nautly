@@ -2,6 +2,7 @@ import "server-only"
 import { and, eq, gt, lt, sql } from "drizzle-orm"
 import { db, schema, type Tx } from "@/db"
 import { templateForVertical } from "@/lib/anamnesis"
+import { googleBusy } from "@/lib/google/calendar"
 import { getVertical } from "@/lib/verticals"
 import { computeSlots, isSlotAvailable, type SlotInput } from "./slots"
 
@@ -28,6 +29,8 @@ async function loadSlotContext(
   q: Tx | typeof db,
   eventType: EventType,
   range: { from: Date; to: Date },
+  /** Ocupado fora do Nautly (Google), buscado antes de abrir transação. */
+  external: SlotInput["busy"] = [],
 ): Promise<Omit<SlotInput, "from" | "to" | "now">> {
   const sched = eventType.scheduleId
     ? await q.query.schedule.findFirst({
@@ -40,17 +43,19 @@ async function loadSlotContext(
       })
 
   // Agendamentos de QUALQUER tipo de evento do profissional bloqueiam a agenda.
-  const busy = await q
+  const { start: windowStart, end: windowEnd } = busyWindow(range)
+  const bookingsBusy = await q
     .select({ start: schema.booking.startsAt, end: schema.booking.endsAt })
     .from(schema.booking)
     .where(
       and(
         eq(schema.booking.hostId, eventType.hostId),
         eq(schema.booking.status, "confirmed"),
-        lt(schema.booking.startsAt, new Date(range.to.getTime() + DAY)),
-        gt(schema.booking.endsAt, new Date(range.from.getTime() - DAY)),
+        lt(schema.booking.startsAt, windowEnd),
+        gt(schema.booking.endsAt, windowStart),
       ),
     )
+  const busy = [...bookingsBusy, ...external]
 
   return {
     timezone: sched?.timezone ?? "UTC",
@@ -65,8 +70,18 @@ async function loadSlotContext(
   }
 }
 
+function busyWindow(range: { from: Date; to: Date }) {
+  return { start: new Date(range.from.getTime() - DAY), end: new Date(range.to.getTime() + DAY) }
+}
+
+/** Compromissos da agenda do Google do profissional, se conectada. */
+function externalBusy(eventType: EventType, range: { from: Date; to: Date }) {
+  const w = busyWindow(range)
+  return googleBusy(eventType.hostId, w.start, w.end)
+}
+
 export async function getAvailableSlots(eventType: EventType, from: Date, to: Date) {
-  const ctx = await loadSlotContext(db, eventType, { from, to })
+  const ctx = await loadSlotContext(db, eventType, { from, to }, await externalBusy(eventType, { from, to }))
   return computeSlots({ ...ctx, from, to, now: new Date() })
 }
 
@@ -89,10 +104,12 @@ export async function createBooking(input: {
   const { eventType, startsAt } = input
   const endsAt = new Date(startsAt.getTime() + eventType.durationMinutes * 60_000)
 
+  const external = await externalBusy(eventType, { from: startsAt, to: endsAt })
+
   return db.transaction(async (tx) => {
     await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${eventType.hostId}))`)
 
-    const ctx = await loadSlotContext(tx, eventType, { from: startsAt, to: endsAt })
+    const ctx = await loadSlotContext(tx, eventType, { from: startsAt, to: endsAt }, external)
     if (!isSlotAvailable({ ...ctx, now: new Date() }, startsAt)) {
       throw new SlotUnavailableError("Esse horário acabou de ser reservado. Escolha outro.")
     }

@@ -2,7 +2,7 @@ import type { requireWorkspace } from "@/lib/session"
 
 type Workspace = Awaited<ReturnType<typeof requireWorkspace>>
 
-export type SettingsIcon = "profile" | "availability" | "features" | "procedures" | "team"
+export type SettingsIcon = "profile" | "availability" | "integrations" | "features" | "procedures" | "team"
 
 export type SettingsSection = {
   href: string
@@ -27,6 +27,12 @@ export function settingsSections(ws: Pick<Workspace, "org" | "can" | "hasModule"
       label: "Disponibilidade",
       description: "Dias e horários em que você aceita agendamentos.",
       icon: "availability",
+    },
+    {
+      href: "/app/settings/integrations",
+      label: "Integrações",
+      description: "Google Calendar sincronizado com a sua agenda.",
+      icon: "integrations",
     },
     manage && {
       href: "/app/settings/features",

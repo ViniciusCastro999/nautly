@@ -2,9 +2,11 @@
 
 import { and, eq, gt, gte, lt, sql } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
+import { after } from "next/server"
 import { z } from "zod"
 import { db, schema } from "@/db"
 import { formatInTz } from "@/lib/format"
+import { syncBookings } from "@/lib/google/calendar"
 import { buildOccurrences, MAX_OCCURRENCES, splitConflicts } from "@/lib/scheduling/recurrence"
 import { requirePermission } from "@/lib/session"
 
@@ -15,11 +17,13 @@ function revalidateAgenda(contactId?: string) {
 
 export async function cancelBookingAsHost(id: string, reason: string) {
   const { org } = await requirePermission("agenda:manage")
-  await db
+  const rows = await db
     .update(schema.booking)
     .set({ status: "cancelled", cancelReason: reason.trim().slice(0, 500) || null })
     .where(and(eq(schema.booking.id, id), eq(schema.booking.organizationId, org.id)))
+    .returning({ id: schema.booking.id })
   revalidateAgenda()
+  after(() => syncBookings(rows.map((r) => r.id)))
 }
 
 /** Cancela esta ocorrência e todas as seguintes da mesma série. */
@@ -43,6 +47,7 @@ export async function cancelSeriesFrom(id: string, reason: string) {
     )
     .returning({ id: schema.booking.id })
   revalidateAgenda(current.contactId)
+  after(() => syncBookings(cancelled.map((r) => r.id)))
   return { ok: true as const, count: cancelled.length }
 }
 
@@ -125,7 +130,7 @@ export async function createManualBooking(input: z.input<typeof manualSchema>): 
         ),
       )
     const { free, conflicts } = splitConflicts(occurrences, existing)
-    if (free.length === 0) return { created: 0, conflicts }
+    if (free.length === 0) return { created: 0, conflicts, ids: [] as string[] }
 
     let seriesId: string | null = null
     if (data.repeat !== "none") {
@@ -143,20 +148,23 @@ export async function createManualBooking(input: z.input<typeof manualSchema>): 
       seriesId = series.id
     }
 
-    await tx.insert(schema.booking).values(
-      free.map((o) => ({
-        organizationId: ctx.org.id,
-        eventTypeId: eventType.id,
-        hostId: eventType.hostId,
-        contactId: contact.id,
-        startsAt: o.startsAt,
-        endsAt: o.endsAt,
-        inviteeTimezone: timezone,
-        notes: data.notes || null,
-        seriesId,
-      })),
-    )
-    return { created: free.length, conflicts }
+    const inserted = await tx
+      .insert(schema.booking)
+      .values(
+        free.map((o) => ({
+          organizationId: ctx.org.id,
+          eventTypeId: eventType.id,
+          hostId: eventType.hostId,
+          contactId: contact.id,
+          startsAt: o.startsAt,
+          endsAt: o.endsAt,
+          inviteeTimezone: timezone,
+          notes: data.notes || null,
+          seriesId,
+        })),
+      )
+      .returning({ id: schema.booking.id })
+    return { created: free.length, conflicts, ids: inserted.map((r) => r.id) }
   })
 
   const skipped = result.conflicts.map((c) => formatInTz(c.startsAt, timezone, "dd/MM 'às' HH:mm"))
@@ -164,5 +172,6 @@ export async function createManualBooking(input: z.input<typeof manualSchema>): 
     return { ok: false, error: `Horário ocupado: ${skipped.join(", ")}.` }
   }
   revalidateAgenda(contact.id)
+  after(() => syncBookings(result.ids))
   return { ok: true, created: result.created, skipped }
 }
