@@ -1,61 +1,73 @@
-import Link from "next/link"
-import { PlusIcon } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { Logo } from "@/components/logo"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { AppSearch } from "@/components/app/app-search"
 import { NavLinks, type NavItem } from "@/components/app/nav-links"
 import { MobileNav } from "@/components/app/mobile-nav"
 import { UserMenu } from "@/components/app/user-menu"
+import { APP_DOMAIN } from "@/lib/constants"
 import { requireWorkspace } from "@/lib/session"
 
 export default async function AppLayout({ children }: LayoutProps<"/app">) {
   const { user, org, vertical, vocab, can } = await requireWorkspace()
+  const canSettings = can("settings:manage")
 
-  const items: NavItem[] = [
-    { href: "/app/event-types", label: "Tipos de evento", icon: "link" },
-    { href: "/app/bookings", label: "Agendamentos", icon: "calendar" },
+  const home: NavItem = { href: "/app", label: "Início", icon: "home", exact: true }
+  const agenda: NavItem = { href: "/app/bookings", label: "Agenda", icon: "calendar" }
+  const clients: NavItem = {
+    href: "/app/contacts",
+    label: vocab.clients,
+    icon: vertical.group === "health" ? "patients" : "users",
+  }
+  const main: NavItem[] = [
+    home,
+    agenda,
+    clients,
+    { href: "/app/event-types", label: "Serviços", icon: "services" },
     { href: "/app/availability", label: "Disponibilidade", icon: "clock" },
-    { href: "/app/contacts", label: vocab.clients, icon: vertical.group === "health" ? "patients" : "users" },
-    ...(can("settings:manage")
-      ? [{ href: "/app/settings", label: "Configurações", icon: "settings" } as const]
-      : []),
   ]
+  const bottom: NavItem[] = canSettings
+    ? [{ href: "/app/settings", label: "Configurações", icon: "settings" }]
+    : []
+  const subtitle = org.kind === "clinic" ? org.name : vertical.label
 
   return (
-    <div className="flex min-h-svh bg-surface">
-      <aside className="sticky top-0 hidden h-svh w-64 shrink-0 flex-col border-r bg-sidebar p-4 lg:flex">
-        <Logo href="/app" className="px-2 pt-1" />
-        <p className="mt-1 mb-6 truncate px-2 text-xs font-medium text-muted-foreground">
-          {org.kind === "clinic" ? org.name : vertical.label}
-        </p>
-        <Button
-          asChild
-          variant="outline"
-          className="mb-6 h-10 rounded-full border-primary/40 font-semibold text-primary hover:bg-accent hover:text-primary"
-        >
-          <Link href="/app/event-types/new">
-            <PlusIcon /> Criar
-          </Link>
-        </Button>
-        <NavLinks items={items} />
-        <div className="mt-auto grid gap-2">
-          <div className="flex items-center justify-between px-2 text-xs text-muted-foreground">
-            Tema <ThemeToggle />
+    <div className="grid min-h-svh bg-surface lg:grid-cols-[232px_minmax(0,1fr)]">
+      <aside className="sticky top-0 z-20 hidden h-svh flex-col bg-sidebar px-4 pt-7 pb-5 text-sidebar-foreground lg:flex">
+        <Logo href="/app" tone="light" className="px-[9px] pb-[31px]" />
+        <NavLinks items={main} />
+        <div className="mt-auto grid gap-[5px]">
+          <NavLinks items={bottom} />
+          <div className="mt-3.5 border-t border-sidebar-border px-2.5 pt-4 text-[13px] text-sidebar-muted">
+            <p className="truncate">{subtitle}</p>
+            <p className="mt-0.5 truncate text-white/50">
+              {APP_DOMAIN}/{user.username}
+            </p>
           </div>
-          <UserMenu name={user.name} email={user.email} username={user.username ?? ""} />
         </div>
       </aside>
 
-      <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex items-center justify-between border-b bg-background/90 px-4 py-3 backdrop-blur lg:hidden">
-          <div className="flex items-center gap-1">
-            <MobileNav items={items} />
-            <Logo href="/app" />
+      <div className="flex min-w-0 flex-col">
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b bg-card/85 px-4 backdrop-blur-md sm:px-6 lg:h-[72px] lg:px-[34px]">
+          <Logo href="/app" className="lg:hidden" />
+          <AppSearch placeholder={`Buscar ${vocab.clients.toLowerCase()}...`} className="hidden lg:flex" />
+          <div className="flex items-center gap-2 sm:gap-4">
+            <ThemeToggle className="text-muted-foreground" />
+            <div className="h-9 border-l" aria-hidden />
+            <UserMenu
+              name={user.name}
+              email={user.email}
+              username={user.username ?? ""}
+              subtitle={subtitle}
+              canManageSettings={canSettings}
+            />
           </div>
-          <ThemeToggle />
         </header>
-        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-8">{children}</main>
+        <main className="page-in mx-auto w-full max-w-[1440px] flex-1 px-4 pt-7 pb-28 sm:px-8 lg:px-9 lg:pt-[34px] lg:pb-[50px]">
+          {children}
+        </main>
       </div>
+
+      <MobileNav primary={[home, agenda, clients]} all={[...main, ...bottom]} />
     </div>
   )
 }

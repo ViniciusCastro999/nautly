@@ -25,7 +25,7 @@ export function CancelBookingButton({ token }: { token: string }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" className="rounded-full text-destructive hover:text-destructive">
+        <Button variant="ghost" className="text-destructive hover:text-destructive">
           Cancelar
         </Button>
       </DialogTrigger>

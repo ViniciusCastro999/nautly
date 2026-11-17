@@ -41,7 +41,7 @@ export default async function Home() {
           <div className="flex items-center gap-2">
             <ThemeToggle />
             {session ? (
-              <Button asChild className="h-10 rounded-full px-5">
+              <Button asChild className="h-10 px-5">
                 <Link href="/app">Ir para o painel</Link>
               </Button>
             ) : (
@@ -53,7 +53,7 @@ export default async function Home() {
                 >
                   <Link href="/login">Entrar</Link>
                 </Button>
-                <Button asChild className="h-10 rounded-full px-5 font-semibold">
+                <Button asChild className="h-10 px-5 font-semibold">
                   <Link href="/signup">Comece grátis</Link>
                 </Button>
               </>
@@ -78,7 +78,7 @@ export default async function Home() {
                 consultórios.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Button asChild size="lg" className="h-12 rounded-full px-7 text-base font-semibold">
+                <Button asChild size="lg" className="h-12 px-7 text-base font-semibold">
                   <Link href="/signup">
                     Criar conta grátis <ArrowRightIcon />
                   </Link>
@@ -124,9 +124,9 @@ export default async function Home() {
                   text: "O cliente escolhe um horário livre no fuso dele e tudo aparece no seu painel.",
                 },
               ].map(({ icon: Icon, title, text }, i) => (
-                <div key={title} className="rounded-2xl border bg-card p-7">
+                <div key={title} className="rounded-[16px] border bg-card p-7">
                   <div className="mb-5 flex items-center gap-3">
-                    <span className="flex size-11 items-center justify-center rounded-xl bg-accent text-primary">
+                    <span className="flex size-11 items-center justify-center rounded-[13px] bg-accent text-primary">
                       <Icon className="size-5" />
                     </span>
                     <span className="text-sm font-bold text-muted-foreground">PASSO {i + 1}</span>
@@ -212,7 +212,7 @@ export default async function Home() {
               ].map(({ icon: Icon, text }) => (
                 <li
                   key={text}
-                  className="flex items-center gap-3 rounded-xl bg-white/5 px-4 py-3 font-medium"
+                  className="flex items-center gap-3 rounded-[13px] bg-white/5 px-4 py-3 font-medium"
                 >
                   <Icon className="size-5 text-brand-foam" /> {text}
                 </li>
@@ -236,7 +236,7 @@ function HeroMockup() {
   const available = new Set([3, 4, 5, 6, 10, 11, 12, 13, 17, 18, 19, 20, 24, 25, 26])
   return (
     <div className="relative mx-auto w-full max-w-lg">
-      <div className="grid overflow-hidden rounded-2xl border bg-card shadow-2xl shadow-primary/10 sm:grid-cols-[180px_1fr]">
+      <div className="grid overflow-hidden rounded-[16px] border bg-card shadow-2xl shadow-primary/10 sm:grid-cols-[180px_1fr]">
         <div className="border-b p-5 sm:border-r sm:border-b-0">
           <span className="mb-3 flex size-10 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
             AS
@@ -280,7 +280,7 @@ function HeroMockup() {
           </div>
         </div>
       </div>
-      <div className="absolute -bottom-6 -left-4 hidden w-44 rounded-xl border bg-card p-3 shadow-xl sm:block">
+      <div className="absolute -bottom-6 -left-4 hidden w-44 rounded-[13px] border bg-card p-3 shadow-xl sm:block">
         <p className="mb-2 text-xs font-semibold">quarta, 18 de novembro</p>
         <div className="grid gap-1.5">
           <span className="rounded-md border border-primary/50 py-1.5 text-center text-xs font-bold text-primary">

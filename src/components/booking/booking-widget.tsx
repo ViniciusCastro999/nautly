@@ -142,7 +142,7 @@ export function BookingWidget({ host, eventType }: Props) {
   return (
     <div
       className={cn(
-        "mx-auto grid w-full overflow-hidden rounded-2xl border bg-card shadow-[0_1px_8px_rgba(0,0,0,0.08)] transition-[max-width] duration-300 dark:shadow-none",
+        "mx-auto grid w-full overflow-hidden rounded-[16px] border bg-card shadow-[0_1px_8px_rgba(0,0,0,0.08)] transition-[max-width] duration-300 dark:shadow-none",
         step === "pick" && selectedDay
           ? "max-w-5xl md:grid-cols-[320px_1fr]"
           : "max-w-4xl md:grid-cols-[320px_1fr]",

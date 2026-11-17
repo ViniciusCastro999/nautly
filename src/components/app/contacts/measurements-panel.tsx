@@ -147,7 +147,7 @@ export function MeasurementsPanel({
       )}
 
       {chartData.length > 0 && (
-        <section className="rounded-xl border bg-card p-5">
+        <section className="rounded-[13px] border bg-card p-5">
           <div className="mb-4 flex flex-wrap gap-1">
             {available.map((k) => (
               <button
@@ -200,7 +200,7 @@ export function MeasurementsPanel({
       )}
 
       {measurements.length > 0 && (
-        <section className="overflow-x-auto rounded-xl border bg-card">
+        <section className="overflow-x-auto rounded-[13px] border bg-card">
           <table className="w-full text-sm">
             <thead className="border-b bg-muted/50 text-left text-xs text-muted-foreground">
               <tr>
@@ -250,7 +250,7 @@ function SummaryCard(props: {
   const change = props.change ?? null
   const good = change !== null && change !== 0 && (props.lowerIsBetter ? change < 0 : change > 0)
   return (
-    <div className="rounded-xl border bg-card p-4">
+    <div className="rounded-[13px] border bg-card p-4">
       <p className="text-xs font-medium text-muted-foreground">{props.label}</p>
       <p className="mt-1 text-xl font-bold tabular-nums">{props.value}</p>
       {change !== null && change !== 0 && (
@@ -316,7 +316,7 @@ function NewMeasurementDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="rounded-full">
+        <Button>
           <PlusIcon /> Nova avaliação
         </Button>
       </DialogTrigger>

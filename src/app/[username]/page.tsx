@@ -32,7 +32,7 @@ export default async function PublicProfilePage({ params }: PageProps<"/[usernam
 
   return (
     <PublicShell>
-      <div className="w-full max-w-4xl rounded-2xl border bg-card p-6 shadow-[0_1px_8px_rgba(0,0,0,0.08)] sm:p-10 dark:shadow-none">
+      <div className="w-full max-w-4xl rounded-[16px] border bg-card p-6 shadow-[0_1px_8px_rgba(0,0,0,0.08)] sm:p-10 dark:shadow-none">
         <div className="mb-10 flex flex-col items-center text-center">
           <Avatar className="mb-4 size-16">
             <AvatarFallback className="bg-primary/10 text-xl font-semibold text-primary">
@@ -41,8 +41,7 @@ export default async function PublicProfilePage({ params }: PageProps<"/[usernam
           </Avatar>
           <h1 className="text-2xl font-bold">{host.name}</h1>
           <p className="mt-2 max-w-md text-muted-foreground">
-            Bem-vindo à minha página de agendamento. Escolha um tipo de evento abaixo para reservar um
-            horário.
+            Bem-vindo à minha página de agendamento. Escolha um serviço abaixo para reservar um horário.
           </p>
         </div>
         {eventTypes.length === 0 ? (
@@ -53,7 +52,7 @@ export default async function PublicProfilePage({ params }: PageProps<"/[usernam
               <Link
                 key={et.id}
                 href={`/${host.username}/${et.slug}`}
-                className="group flex items-center gap-4 rounded-xl border p-5 transition-colors hover:border-primary hover:bg-accent/40"
+                className="group flex items-center gap-4 rounded-[13px] border p-5 transition-colors hover:border-primary hover:bg-accent/40"
               >
                 <span className="size-6 shrink-0 rounded-full" style={{ backgroundColor: et.color }} />
                 <span className="min-w-0 flex-1">

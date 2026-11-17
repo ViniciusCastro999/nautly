@@ -97,7 +97,7 @@ function MonthGrid({
   onSelect,
 }: Props & { byDay: Map<string, BookingView[]>; onSelect: (b: BookingView) => void }) {
   return (
-    <div className="overflow-hidden rounded-xl border bg-card">
+    <div className="overflow-hidden rounded-[13px] border bg-card">
       <div className="grid grid-cols-7 border-b">
         {WEEKDAYS_SHORT.map((d) => (
           <div
@@ -252,7 +252,7 @@ function TimeGrid({
   const cols = days.length
 
   return (
-    <div className="overflow-hidden rounded-xl border bg-card">
+    <div className="overflow-hidden rounded-[13px] border bg-card">
       <div className="overflow-x-auto">
         <div className={cn(mode === "week" && "min-w-[720px]")}>
           {/* Cabeçalho dos dias */}

@@ -305,10 +305,10 @@ export function EventTypeForm({ eventType, username }: { eventType?: EventType; 
         </Card>
         {state.message && <p className="text-sm text-destructive">{state.message}</p>}
         <div className="flex gap-2">
-          <Button asChild variant="outline" className="h-10 flex-1 rounded-full">
+          <Button asChild variant="outline" className="h-10 flex-1">
             <Link href="/app/event-types">Cancelar</Link>
           </Button>
-          <Button type="submit" className="h-10 flex-1 rounded-full" disabled={pending}>
+          <Button type="submit" className="h-10 flex-1" disabled={pending}>
             {pending && <Loader2Icon className="animate-spin" />}
             Salvar
           </Button>

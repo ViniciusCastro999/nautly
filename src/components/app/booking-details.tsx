@@ -168,11 +168,11 @@ export function BookingActions({
 
   return (
     <div className="flex flex-wrap gap-2">
-      <Button variant="outline" className="rounded-full" onClick={() => setCancelScope("one")}>
+      <Button variant="outline" onClick={() => setCancelScope("one")}>
         Cancelar agendamento
       </Button>
       {b.seriesId && (
-        <Button variant="ghost" className="rounded-full" onClick={() => setCancelScope("series")}>
+        <Button variant="ghost" onClick={() => setCancelScope("series")}>
           Cancelar esta e as próximas
         </Button>
       )}

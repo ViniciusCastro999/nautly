@@ -22,20 +22,28 @@ export function Logo({
   href = "/",
   className,
   withTagline = false,
+  tone = "default",
 }: {
   href?: string
   className?: string
   /** Mostra "Agendamentos" ao lado do nome. */
   withTagline?: boolean
+  /** "light" para fundos escuros (sidebar). */
+  tone?: "default" | "light"
 }) {
   return (
     <Link
       href={href}
-      className={cn("flex items-center gap-2", className)}
+      className={cn("flex items-center gap-2.5", className)}
       aria-label={`${APP_NAME} ${APP_TAGLINE}`}
     >
       <LogoMark />
-      <span className="font-brand text-2xl leading-none font-medium tracking-tight text-foreground">
+      <span
+        className={cn(
+          "font-brand text-2xl leading-none font-medium tracking-tight",
+          tone === "light" ? "text-white" : "text-primary dark:text-foreground",
+        )}
+      >
         {APP_NAME.toLowerCase()}
       </span>
       {withTagline && (

@@ -9,5 +9,5 @@ import { Skeleton } from "@/components/ui/skeleton"
  */
 export const BookingWidget = dynamic(() => import("./booking-widget").then((m) => m.BookingWidget), {
   ssr: false,
-  loading: () => <Skeleton className="h-[560px] w-full max-w-4xl rounded-2xl" />,
+  loading: () => <Skeleton className="h-[560px] w-full max-w-4xl rounded-[16px]" />,
 })

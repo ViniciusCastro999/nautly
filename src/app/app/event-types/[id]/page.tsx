@@ -6,7 +6,7 @@ import { EventTypeForm } from "@/components/app/event-type-form"
 import { db, schema } from "@/db"
 import { requireWorkspace } from "@/lib/session"
 
-export const metadata: Metadata = { title: "Editar tipo de evento" }
+export const metadata: Metadata = { title: "Editar serviço" }
 
 export default async function EditEventTypePage({ params }: PageProps<"/app/event-types/[id]">) {
   const { id } = await params
@@ -18,7 +18,7 @@ export default async function EditEventTypePage({ params }: PageProps<"/app/even
 
   return (
     <>
-      <PageHeader title="Editar tipo de evento" description={eventType.title} />
+      <PageHeader title="Editar serviço" description={eventType.title} />
       <EventTypeForm eventType={eventType} username={user.username ?? ""} />
     </>
   )

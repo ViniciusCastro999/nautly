@@ -45,7 +45,7 @@ export default async function BookingPage({ params }: PageProps<"/booking/[token
 
   return (
     <PublicShell>
-      <div className="w-full max-w-2xl rounded-2xl border bg-card p-6 text-center shadow-[0_1px_8px_rgba(0,0,0,0.08)] sm:p-10 dark:shadow-none">
+      <div className="w-full max-w-2xl rounded-[16px] border bg-card p-6 text-center shadow-[0_1px_8px_rgba(0,0,0,0.08)] sm:p-10 dark:shadow-none">
         {cancelled ? (
           <CircleXIcon className="mx-auto mb-3 size-10 text-destructive" />
         ) : (
@@ -63,7 +63,7 @@ export default async function BookingPage({ params }: PageProps<"/booking/[token
         {anamnesis && (
           <Link
             href={`/anamnese/${anamnesis.token}`}
-            className="mx-auto mt-6 flex max-w-md items-center gap-3 rounded-xl border border-primary/30 bg-accent p-4 text-left transition-colors hover:border-primary"
+            className="mx-auto mt-6 flex max-w-md items-center gap-3 rounded-[13px] border border-primary/30 bg-accent p-4 text-left transition-colors hover:border-primary"
           >
             <ClipboardListIcon className="size-6 shrink-0 text-primary" />
             <span className="min-w-0 flex-1">
@@ -75,7 +75,7 @@ export default async function BookingPage({ params }: PageProps<"/booking/[token
           </Link>
         )}
 
-        <div className="mx-auto mt-8 max-w-md rounded-xl border p-6 text-left">
+        <div className="mx-auto mt-8 max-w-md rounded-[13px] border p-6 text-left">
           <h2 className="mb-4 text-lg font-bold">{b.eventType.title}</h2>
           <ul className="grid gap-3 text-sm font-medium text-muted-foreground">
             <li className="flex items-center gap-2.5">
@@ -108,12 +108,12 @@ export default async function BookingPage({ params }: PageProps<"/booking/[token
 
         {!cancelled && upcoming && (
           <div className="mt-8 flex flex-wrap justify-center gap-2">
-            <Button asChild variant="outline" className="rounded-full">
+            <Button asChild variant="outline">
               <a href={googleCalendarUrl(b)} target="_blank" rel="noreferrer">
                 <CalendarPlusIcon /> Google Agenda
               </a>
             </Button>
-            <Button asChild variant="outline" className="rounded-full">
+            <Button asChild variant="outline">
               <a href={`/booking/${token}/ics`}>
                 <DownloadIcon /> Arquivo .ics
               </a>

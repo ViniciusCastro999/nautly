@@ -123,21 +123,29 @@ export default async function ContactPage({ params, searchParams }: PageProps<"/
     <>
       <Link
         href="/app/contacts"
-        className="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
+        className="mb-4 inline-flex items-center gap-1 text-[13px] font-medium text-muted-foreground hover:text-foreground"
       >
-        <ArrowLeftIcon className="size-4" /> {vocab.clients}
+        <ArrowLeftIcon className="size-3.5" /> Voltar para {vocab.clients.toLowerCase()}
       </Link>
 
       {/* Cabeçalho */}
-      <div className="mb-6 flex flex-col gap-4 rounded-xl border bg-card p-5 sm:flex-row sm:items-center">
-        <Avatar className="size-16">
-          <AvatarFallback className="bg-primary/10 text-xl font-semibold text-primary">
+      <div className="mb-[17px] flex flex-col gap-4 rounded-[13px] border bg-card p-5 sm:flex-row sm:items-center">
+        <Avatar className="size-[54px]">
+          <AvatarFallback className="bg-foam/50 text-base font-semibold text-primary dark:bg-sea-50 dark:text-foam">
             {initials(contact.name)}
           </AvatarFallback>
         </Avatar>
         <div className="min-w-0 flex-1">
-          <h1 className="truncate text-2xl font-bold tracking-tight">{contact.name}</h1>
-          <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <h1 className="truncate text-[clamp(22px,2.4vw,28px)] leading-tight font-medium tracking-[-0.02em] text-primary dark:text-foreground">
+              {contact.name}
+            </h1>
+            <Badge variant={upcoming.length > 0 ? "success" : "muted"}>
+              <i className="size-1.5 rounded-full bg-current" />{" "}
+              {upcoming.length > 0 ? "Em acompanhamento" : "Sem horário"}
+            </Badge>
+          </div>
+          <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-[13px] text-muted-foreground">
             {age !== null && (
               <span className="flex items-center gap-1.5">
                 <CakeIcon className="size-4" /> {age} anos
@@ -157,16 +165,20 @@ export default async function ContactPage({ params, searchParams }: PageProps<"/
         </div>
         <div className="flex items-center gap-6 text-center sm:pr-2">
           <div>
-            <p className="text-2xl font-bold tabular-nums">{attended.length}</p>
+            <p className="text-2xl font-bold text-primary tabular-nums dark:text-foreground">
+              {attended.length}
+            </p>
             <p className="text-xs text-muted-foreground">Realizadas</p>
           </div>
           <div>
-            <p className="text-2xl font-bold tabular-nums">{upcoming.length}</p>
+            <p className="text-2xl font-bold text-primary tabular-nums dark:text-foreground">
+              {upcoming.length}
+            </p>
             <p className="text-xs text-muted-foreground">Agendadas</p>
           </div>
           {noShows > 0 && (
             <div>
-              <p className="text-2xl font-bold text-destructive tabular-nums">{noShows}</p>
+              <p className="text-2xl font-bold text-warm-foreground tabular-nums">{noShows}</p>
               <p className="text-xs text-muted-foreground">{noShows === 1 ? "Falta" : "Faltas"}</p>
             </div>
           )}
@@ -178,7 +190,7 @@ export default async function ContactPage({ params, searchParams }: PageProps<"/
               defaultDate={formatInTz(now, user.timezone, "yyyy-MM-dd")}
               clientNoun={vocab.client}
             >
-              <Button className="rounded-full">
+              <Button>
                 <CalendarPlusIcon /> Agendar
               </Button>
             </NewBookingDialog>
@@ -187,16 +199,16 @@ export default async function ContactPage({ params, searchParams }: PageProps<"/
       </div>
 
       {/* Abas */}
-      <div className="mb-6 flex gap-1 overflow-x-auto border-b">
+      <div className="mb-[17px] flex w-fit max-w-full gap-1 overflow-x-auto rounded-[10px] border bg-card p-1">
         {tabs.map(({ key, label, icon: Icon }) => (
           <Link
             key={key}
             href={`/app/contacts/${contact.id}${key === "overview" ? "" : `?tab=${key}`}`}
             className={cn(
-              "-mb-px flex shrink-0 items-center gap-2 border-b-2 px-4 py-2.5 text-sm font-semibold transition-colors",
+              "flex shrink-0 items-center gap-2 rounded-[7px] px-3 py-2 text-[13px] font-semibold transition-colors",
               tab === key
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground",
+                ? "bg-sea-50 text-primary dark:text-foreground"
+                : "text-muted-foreground hover:text-foreground",
             )}
           >
             <Icon className="size-4" /> {label}
@@ -206,8 +218,8 @@ export default async function ContactPage({ params, searchParams }: PageProps<"/
 
       {tab === "overview" && (
         <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
-          <section className="overflow-hidden rounded-xl border bg-card">
-            <h2 className="border-b px-5 py-3 font-semibold">
+          <section className="overflow-hidden rounded-[13px] border bg-card">
+            <h2 className="flex min-h-[60px] items-center border-b px-[19px] font-semibold text-primary dark:text-foreground">
               Histórico de {vocab.appointments.toLowerCase()}
             </h2>
             {bookings.length === 0 ? (
@@ -248,7 +260,7 @@ export default async function ContactPage({ params, searchParams }: PageProps<"/
             )}
           </section>
 
-          <section className="h-fit rounded-xl border bg-card p-5">
+          <section className="h-fit rounded-[13px] border bg-card p-5">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="font-semibold">Cadastro</h2>
               {ctx.can("clients:write") && (
@@ -485,7 +497,7 @@ async function AccessTab(props: { contactId: string; orgId: string; timezone: st
     limit: 100,
   })
   return (
-    <section className="overflow-hidden rounded-xl border bg-card">
+    <section className="overflow-hidden rounded-[13px] border bg-card">
       <div className="flex items-start gap-3 border-b px-5 py-4">
         <LockIcon className="mt-0.5 size-4 text-muted-foreground" />
         <div>

@@ -62,7 +62,7 @@ export function AnamnesisForm({
         </fieldset>
       ))}
       {error && <p className="text-sm text-destructive">{error}</p>}
-      <Button type="submit" size="lg" className="h-11 rounded-full" disabled={pending}>
+      <Button type="submit" size="lg" className="h-11" disabled={pending}>
         {pending && <Loader2Icon className="animate-spin" />}
         {submitLabel}
       </Button>

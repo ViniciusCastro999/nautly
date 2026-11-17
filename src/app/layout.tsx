@@ -1,11 +1,15 @@
 import type { Metadata } from "next"
-import { Inter, Outfit } from "next/font/google"
+import { Nunito, Outfit } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import "./globals.css"
 
-const inter = Inter({ variable: "--font-inter", subsets: ["latin"] })
+const nunito = Nunito({
+  variable: "--font-nunito",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+})
 const outfit = Outfit({ variable: "--font-outfit", subsets: ["latin"], weight: ["500", "600"] })
 
 export const metadata: Metadata = {
@@ -19,7 +23,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="pt-BR"
-      className={`${inter.variable} ${outfit.variable} h-full antialiased`}
+      className={`${nunito.variable} ${outfit.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col">

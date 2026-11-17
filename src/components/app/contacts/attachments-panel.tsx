@@ -84,7 +84,7 @@ export function AttachmentsPanel({
   return (
     <div className="grid gap-6">
       {canWrite && (
-        <section className="rounded-xl border bg-card p-5">
+        <section className="rounded-[13px] border bg-card p-5">
           <div
             onDragOver={(e) => {
               e.preventDefault()
@@ -149,7 +149,7 @@ export function AttachmentsPanel({
                   placeholder="Ex.: Hemograma completo, março"
                 />
               </div>
-              <Button className="rounded-full" disabled={uploading} onClick={upload}>
+              <Button disabled={uploading} onClick={upload}>
                 {uploading && <Loader2Icon className="animate-spin" />}
                 Anexar
               </Button>
@@ -159,7 +159,7 @@ export function AttachmentsPanel({
       )}
 
       {files.length === 0 ? (
-        <div className="flex flex-col items-center rounded-xl border border-dashed bg-card p-10 text-center">
+        <div className="flex flex-col items-center rounded-[13px] border border-dashed bg-card p-10 text-center">
           <FileIcon className="mb-3 size-8 text-muted-foreground" />
           <p className="font-semibold">Nenhum anexo</p>
           <p className="mt-1 text-sm text-muted-foreground">Exames, laudos e imagens aparecem aqui.</p>
@@ -173,7 +173,7 @@ export function AttachmentsPanel({
                 ? FileTextIcon
                 : FileIcon
             return (
-              <li key={f.id} className="flex flex-col rounded-xl border bg-card p-4">
+              <li key={f.id} className="flex flex-col rounded-[13px] border bg-card p-4">
                 <div className="flex items-start gap-3">
                   <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-accent text-primary">
                     <Icon className="size-5" />

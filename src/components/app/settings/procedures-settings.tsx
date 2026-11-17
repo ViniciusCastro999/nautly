@@ -96,7 +96,7 @@ export function ProceduresSettings({
           <CardTitle>Procedimentos e preços</CardTitle>
           <CardDescription>Catálogo usado para montar orçamentos e planos de tratamento.</CardDescription>
         </div>
-        <Button size="sm" className="rounded-full" onClick={() => open()}>
+        <Button size="sm" onClick={() => open()}>
           <PlusIcon /> Novo procedimento
         </Button>
       </CardHeader>
@@ -223,10 +223,10 @@ export function ProceduresSettings({
               </>
             )}
             <DialogFooter>
-              <Button type="button" variant="outline" className="rounded-full" onClick={() => setDraft(null)}>
+              <Button type="button" variant="outline" onClick={() => setDraft(null)}>
                 Cancelar
               </Button>
-              <Button type="submit" className="rounded-full" disabled={pending}>
+              <Button type="submit" disabled={pending}>
                 {pending && <Loader2Icon className="animate-spin" />}
                 Salvar
               </Button>

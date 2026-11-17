@@ -84,7 +84,7 @@ export function OnboardingWizard({ firstName }: { firstName: string }) {
                         type="button"
                         onClick={() => setVertical(id)}
                         className={cn(
-                          "relative flex items-start gap-3 rounded-xl border bg-card p-4 text-left transition-all hover:border-primary/60 hover:shadow-sm",
+                          "relative flex items-start gap-3 rounded-[13px] border bg-card p-4 text-left transition-all hover:border-primary/60 hover:shadow-sm",
                           selected && "border-primary ring-2 ring-primary/30",
                         )}
                       >
@@ -148,7 +148,7 @@ export function OnboardingWizard({ firstName }: { firstName: string }) {
                 type="button"
                 onClick={() => setKind(id)}
                 className={cn(
-                  "flex flex-col items-center gap-2 rounded-xl border bg-card p-6 text-center transition-all hover:border-primary/60",
+                  "flex flex-col items-center gap-2 rounded-[13px] border bg-card p-6 text-center transition-all hover:border-primary/60",
                   kind === id && "border-primary ring-2 ring-primary/30",
                 )}
               >
@@ -188,7 +188,7 @@ export function OnboardingWizard({ firstName }: { firstName: string }) {
           </div>
 
           <div className="mt-10 flex justify-between">
-            <Button variant="ghost" className="rounded-full" onClick={() => setStep("area")}>
+            <Button variant="ghost" onClick={() => setStep("area")}>
               <ArrowLeftIcon /> Voltar
             </Button>
             <Button
@@ -205,7 +205,7 @@ export function OnboardingWizard({ firstName }: { firstName: string }) {
 
       {step === "review" && v && vertical && (
         <section className="mx-auto max-w-xl">
-          <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
+          <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-[16px] bg-primary text-primary-foreground">
             <VerticalIcon vertical={vertical} className="size-7" />
           </div>
           <h1 className="text-center text-3xl font-extrabold tracking-tight">Tudo pronto para {v.label}</h1>
@@ -213,7 +213,7 @@ export function OnboardingWizard({ firstName }: { firstName: string }) {
             Seu painel vai chamar quem agenda de <strong>{v.vocabulary.client}</strong>.
           </p>
 
-          <div className="mt-8 grid gap-4 rounded-xl border bg-card p-6">
+          <div className="mt-8 grid gap-4 rounded-[13px] border bg-card p-6">
             <div>
               <p className="mb-2 text-sm font-semibold">Ativado para você</p>
               <ul className="grid gap-2">
@@ -257,10 +257,10 @@ export function OnboardingWizard({ firstName }: { firstName: string }) {
           {error && <p className="mt-4 text-center text-sm text-destructive">{error}</p>}
 
           <div className="mt-10 flex justify-between">
-            <Button variant="ghost" className="rounded-full" onClick={() => setStep("team")}>
+            <Button variant="ghost" onClick={() => setStep("team")}>
               <ArrowLeftIcon /> Voltar
             </Button>
-            <Button size="lg" className="h-11 rounded-full px-8" disabled={pending} onClick={finish}>
+            <Button size="lg" className="h-11 px-8" disabled={pending} onClick={finish}>
               {pending && <Loader2Icon className="animate-spin" />}
               Ir para o painel
             </Button>

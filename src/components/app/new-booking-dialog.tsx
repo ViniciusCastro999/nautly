@@ -55,7 +55,7 @@ export function NewBookingDialog({
     e.preventDefault()
     const form = new FormData(e.currentTarget)
     if (!contactId || !eventTypeId) {
-      setError(`Escolha o ${clientNoun} e o tipo de evento.`)
+      setError(`Escolha o ${clientNoun} e o serviço.`)
       return
     }
     setError(null)
@@ -98,7 +98,7 @@ export function NewBookingDialog({
         </DialogHeader>
 
         {eventTypes.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Crie um tipo de evento antes de agendar.</p>
+          <p className="text-sm text-muted-foreground">Crie um serviço antes de agendar.</p>
         ) : (
           <form onSubmit={onSubmit} className="grid gap-4 sm:grid-cols-2">
             {!contact && (
@@ -119,7 +119,7 @@ export function NewBookingDialog({
               </div>
             )}
             <div className="grid gap-2 sm:col-span-2">
-              <Label>Tipo de evento</Label>
+              <Label>Serviço</Label>
               <Select value={eventTypeId} onValueChange={setEventTypeId}>
                 <SelectTrigger className="h-10 w-full">
                   <SelectValue />

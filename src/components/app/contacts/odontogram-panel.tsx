@@ -217,7 +217,7 @@ export function OdontogramPanel({
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1fr_320px]">
-      <section className="min-w-0 rounded-xl border bg-card p-5">
+      <section className="min-w-0 rounded-[13px] border bg-card p-5">
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="font-semibold">Odontograma</h2>
@@ -298,7 +298,7 @@ export function OdontogramPanel({
         </div>
       </section>
 
-      <aside className="h-fit rounded-xl border bg-card p-5">
+      <aside className="h-fit rounded-[13px] border bg-card p-5">
         {selected === null ? (
           <p className="text-sm text-muted-foreground">
             Selecione um dente no odontograma para ver e editar a situação de cada face.
@@ -413,12 +413,12 @@ export function OdontogramPanel({
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                  <Button className="rounded-full" disabled={pending || !dirty} onClick={save}>
+                  <Button disabled={pending || !dirty} onClick={save}>
                     {pending && <Loader2Icon className="animate-spin" />}
                     Salvar dente {selected}
                   </Button>
                   {treatmentHref && needsTreatment(draft) && (
-                    <Button asChild variant="outline" className="rounded-full">
+                    <Button asChild variant="outline">
                       <Link href={`${treatmentHref}&tooth=${selected}`}>
                         <PlusIcon /> Orçar tratamento
                       </Link>

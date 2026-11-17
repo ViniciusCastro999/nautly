@@ -69,7 +69,7 @@ export function AnamnesisPanel({
 
   return (
     <div className="grid gap-4">
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border bg-card p-5">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-[13px] border bg-card p-5">
         <div className="flex items-start gap-3">
           <ClipboardListIcon className="mt-0.5 size-5 text-primary" />
           <div>
@@ -102,13 +102,13 @@ export function AnamnesisPanel({
       </div>
 
       {forms.length === 0 && (
-        <p className="rounded-xl border border-dashed bg-card p-8 text-center text-sm text-muted-foreground">
+        <p className="rounded-[13px] border border-dashed bg-card p-8 text-center text-sm text-muted-foreground">
           Nenhuma anamnese ainda.
         </p>
       )}
 
       {forms.map((f) => (
-        <section key={f.id} className="overflow-hidden rounded-xl border bg-card">
+        <section key={f.id} className="overflow-hidden rounded-[13px] border bg-card">
           <header className="flex flex-wrap items-center gap-3 border-b px-5 py-3">
             <h3 className="font-semibold">{f.title}</h3>
             {f.status === "pending" ? (
@@ -130,7 +130,7 @@ export function AnamnesisPanel({
           {f.status === "pending" && canWrite && (
             <div className="grid gap-4 p-5">
               <div className="flex flex-wrap gap-2">
-                <Button variant="outline" size="sm" className="rounded-full" onClick={() => copy(f.token)}>
+                <Button variant="outline" size="sm" onClick={() => copy(f.token)}>
                   <CopyIcon /> Copiar link
                 </Button>
                 <Button

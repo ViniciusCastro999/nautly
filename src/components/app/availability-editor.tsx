@@ -262,7 +262,7 @@ export function AvailabilityEditor(props: { timezone: string; rules: Rule[]; blo
           </CardContent>
         </Card>
 
-        <Button onClick={save} disabled={pending} className="h-10 rounded-full">
+        <Button onClick={save} disabled={pending} className="h-10">
           {pending && <Loader2Icon className="animate-spin" />}
           Salvar alterações
         </Button>

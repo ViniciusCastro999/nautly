@@ -27,7 +27,7 @@ export function PublicApproval({ token, total }: { token: string; total: string 
   }
 
   return (
-    <div className="grid gap-4 rounded-xl border bg-muted/40 p-5">
+    <div className="grid gap-4 rounded-[13px] border bg-muted/40 p-5">
       <div className="grid gap-2">
         <Label htmlFor="approver">Seu nome completo</Label>
         <Input

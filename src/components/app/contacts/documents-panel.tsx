@@ -72,7 +72,7 @@ export function DocumentsPanel({
 }) {
   return (
     <div className="grid gap-4">
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border bg-card p-5">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-[13px] border bg-card p-5">
         <div>
           <h2 className="font-semibold">{clinicalDocs ? "Documentos" : "Recibos e declarações"}</h2>
           <p className="text-sm text-muted-foreground">
@@ -108,11 +108,11 @@ export function DocumentsPanel({
       )}
 
       {documents.length === 0 ? (
-        <p className="rounded-xl border border-dashed bg-card p-8 text-center text-sm text-muted-foreground">
+        <p className="rounded-[13px] border border-dashed bg-card p-8 text-center text-sm text-muted-foreground">
           Nenhum documento emitido.
         </p>
       ) : (
-        <ul className="divide-y overflow-hidden rounded-xl border bg-card">
+        <ul className="divide-y overflow-hidden rounded-[13px] border bg-card">
           {documents.map((d) => (
             <li key={d.id} className="flex items-center gap-4 px-5 py-3">
               <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-accent text-primary">
@@ -126,7 +126,7 @@ export function DocumentsPanel({
                   {d.createdAt} · {d.summary}
                 </p>
               </div>
-              <Button asChild variant="outline" size="sm" className="rounded-full">
+              <Button asChild variant="outline" size="sm">
                 <a href={`/api/documents/${d.id}`} target="_blank" rel="noopener">
                   <FileTextIcon /> Abrir PDF
                 </a>
@@ -183,7 +183,7 @@ function ReceiptDialog({ contactId, bookings }: { contactId: string; bookings: B
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="rounded-full">
+        <Button>
           <ReceiptIcon /> Emitir recibo
         </Button>
       </DialogTrigger>
@@ -270,7 +270,7 @@ function AttendanceDialog({ contactId, bookings }: { contactId: string; bookings
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="rounded-full">
+        <Button variant="outline">
           <FileCheckIcon /> Declaração
         </Button>
       </DialogTrigger>
@@ -369,7 +369,7 @@ function CertificateDialog({ contactId, bookings }: { contactId: string; booking
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="rounded-full">
+        <Button variant="outline">
           <StethoscopeIcon /> Atestado
         </Button>
       </DialogTrigger>
@@ -477,7 +477,7 @@ function PrescriptionDialog({ contactId }: { contactId: string }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="rounded-full">
+        <Button variant="outline">
           <PillIcon /> Receituário
         </Button>
       </DialogTrigger>

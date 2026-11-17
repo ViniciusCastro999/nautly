@@ -117,7 +117,7 @@ export function SignupForm() {
             <p className="text-xs text-muted-foreground">Mínimo de 8 caracteres.</p>
           </div>
           {error && <p className="text-sm text-destructive">{error}</p>}
-          <Button type="submit" size="lg" className="h-10 rounded-full" disabled={pending}>
+          <Button type="submit" size="lg" className="h-10" disabled={pending}>
             {pending && <Loader2Icon className="animate-spin" />}
             Criar conta
           </Button>

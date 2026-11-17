@@ -56,7 +56,7 @@ export function EventTypeCard({
   return (
     <div
       className={cn(
-        "group relative flex flex-col overflow-hidden rounded-xl border bg-card shadow-xs transition-shadow hover:shadow-md",
+        "group relative flex flex-col overflow-hidden rounded-[13px] border bg-card shadow-xs transition-shadow hover:shadow-md",
         !et.isActive && "opacity-60",
         pending && "pointer-events-none opacity-50",
       )}

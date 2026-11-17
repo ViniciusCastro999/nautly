@@ -63,7 +63,7 @@ export function NotesPanel({
     <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
       <div className="grid h-fit gap-4">
         {canWrite && (
-          <section className="rounded-xl border bg-card p-5">
+          <section className="rounded-[13px] border bg-card p-5">
             <h2 className="mb-3 font-semibold">Novo registro</h2>
             <Textarea
               value={content}
@@ -95,7 +95,7 @@ export function NotesPanel({
                 <Switch checked={isPrivate} onCheckedChange={setIsPrivate} />
                 Anotação privada
               </label>
-              <Button className="ml-auto rounded-full" disabled={pending || !content.trim()} onClick={submit}>
+              <Button className="ml-auto" disabled={pending || !content.trim()} onClick={submit}>
                 {pending && <Loader2Icon className="animate-spin" />}
                 Salvar registro
               </Button>
@@ -104,7 +104,7 @@ export function NotesPanel({
         )}
 
         {notes.length === 0 ? (
-          <div className="flex flex-col items-center rounded-xl border border-dashed bg-card p-10 text-center">
+          <div className="flex flex-col items-center rounded-[13px] border border-dashed bg-card p-10 text-center">
             <FileTextIcon className="mb-3 size-8 text-muted-foreground" />
             <p className="font-semibold">Prontuário vazio</p>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -120,7 +120,7 @@ export function NotesPanel({
         )}
       </div>
 
-      <aside className="h-fit rounded-xl border bg-card p-5 text-sm">
+      <aside className="h-fit rounded-[13px] border bg-card p-5 text-sm">
         <p className="mb-3 flex items-center gap-2 font-semibold">
           <ShieldCheckIcon className="size-4 text-success" /> Proteção dos dados
         </p>
@@ -148,7 +148,7 @@ function NoteItem({ note: n }: { note: Note }) {
           n.isPrivate ? "bg-amber-500" : "bg-primary",
         )}
       />
-      <article className={cn("rounded-xl border bg-card p-5", n.isPrivate && "border-amber-500/40")}>
+      <article className={cn("rounded-[13px] border bg-card p-5", n.isPrivate && "border-amber-500/40")}>
         <header className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
           <span className="font-semibold">{n.createdAt}</span>
           <span className="text-muted-foreground">por {n.authorName}</span>

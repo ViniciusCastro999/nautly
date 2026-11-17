@@ -21,7 +21,7 @@ import { formatInTz } from "@/lib/format"
 import { requireWorkspace } from "@/lib/session"
 import { cn } from "@/lib/utils"
 
-export const metadata: Metadata = { title: "Agendamentos" }
+export const metadata: Metadata = { title: "Agenda" }
 
 const TABS = [
   { key: "upcoming", label: "Próximos" },
@@ -85,8 +85,8 @@ export default async function BookingsPage({ searchParams }: PageProps<"/app/boo
   return (
     <>
       <PageHeader
-        title="Agendamentos"
-        description="Acompanhe e gerencie seus compromissos."
+        title="Agenda"
+        description="Tudo o que você precisa para organizar o dia."
         actions={
           <div className="flex flex-wrap items-center gap-2">
             {ctx.can("agenda:manage") && (
@@ -97,12 +97,12 @@ export default async function BookingsPage({ searchParams }: PageProps<"/app/boo
                 defaultDate={formatInTz(new Date(), ctx.user.timezone, "yyyy-MM-dd")}
                 clientNoun={ctx.vocab.client}
               >
-                <Button className="rounded-full">
+                <Button size="lg">
                   <CalendarPlusIcon /> Novo agendamento
                 </Button>
               </NewBookingDialog>
             )}
-            <div className="inline-flex rounded-full border bg-card p-1">
+            <div className="inline-flex rounded-[10px] border bg-card p-1">
               {[
                 { key: "list", label: "Lista", icon: ListIcon, href: "/app/bookings" },
                 {
@@ -116,9 +116,9 @@ export default async function BookingsPage({ searchParams }: PageProps<"/app/boo
                   key={key}
                   href={href}
                   className={cn(
-                    "flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-semibold transition-colors",
+                    "flex items-center gap-1.5 rounded-[7px] px-3.5 py-1.5 text-[13px] font-semibold transition-colors",
                     view === key
-                      ? "bg-primary text-primary-foreground"
+                      ? "bg-sea-50 text-primary dark:text-foreground"
                       : "text-muted-foreground hover:text-foreground",
                   )}
                 >
@@ -160,31 +160,33 @@ async function CalendarSection({ mode, date }: { mode: CalendarMode; date?: stri
   return (
     <>
       <div className="mb-4 flex flex-wrap items-center gap-3">
-        <Button asChild variant="outline" className="h-9 rounded-full px-4">
+        <Button asChild variant="outline">
           <Link href={href(mode, range.todayKey)}>Hoje</Link>
         </Button>
         <div className="flex items-center">
-          <Button asChild variant="ghost" size="icon" className="rounded-full" aria-label="Anterior">
+          <Button asChild variant="ghost" size="icon" aria-label="Anterior">
             <Link href={href(mode, range.prevKey)}>
               <ChevronLeftIcon />
             </Link>
           </Button>
-          <Button asChild variant="ghost" size="icon" className="rounded-full" aria-label="Próximo">
+          <Button asChild variant="ghost" size="icon" aria-label="Próximo">
             <Link href={href(mode, range.nextKey)}>
               <ChevronRightIcon />
             </Link>
           </Button>
         </div>
-        <h2 className="text-lg font-semibold first-letter:uppercase sm:text-xl">{range.title}</h2>
-        <div className="ml-auto inline-flex rounded-lg border bg-card p-0.5">
+        <h2 className="text-lg font-semibold text-primary first-letter:uppercase sm:text-xl dark:text-foreground">
+          {range.title}
+        </h2>
+        <div className="ml-auto inline-flex rounded-[10px] border bg-card p-1">
           {CALENDAR_MODES.map((m) => (
             <Link
               key={m}
               href={href(m, range.anchorKey)}
               className={cn(
-                "rounded-md px-3 py-1 text-sm font-semibold transition-colors",
+                "rounded-[7px] px-3 py-1 text-[13px] font-semibold transition-colors",
                 mode === m
-                  ? "bg-accent text-accent-foreground"
+                  ? "bg-sea-50 text-primary dark:text-foreground"
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
@@ -234,15 +236,15 @@ async function ListSection({ tab }: { tab: TabKey }) {
 
   return (
     <>
-      <div className="mb-6 inline-flex rounded-full border bg-card p-1">
+      <div className="mb-[17px] inline-flex rounded-[10px] border bg-card p-1">
         {TABS.map((t) => (
           <Link
             key={t.key}
             href={`/app/bookings?tab=${t.key}`}
             className={cn(
-              "rounded-full px-4 py-1.5 text-sm font-semibold transition-colors",
+              "rounded-[7px] px-3.5 py-1.5 text-[13px] font-semibold transition-colors",
               tab === t.key
-                ? "bg-primary text-primary-foreground"
+                ? "bg-sea-50 text-primary dark:text-foreground"
                 : "text-muted-foreground hover:text-foreground",
             )}
           >
@@ -252,21 +254,23 @@ async function ListSection({ tab }: { tab: TabKey }) {
       </div>
 
       {bookings.length === 0 ? (
-        <div className="flex flex-col items-center rounded-xl border border-dashed bg-card p-12 text-center">
-          <CalendarXIcon className="mb-3 size-10 text-muted-foreground" />
+        <div className="flex flex-col items-center rounded-[13px] border bg-card p-12 text-center">
+          <span className="mb-4 grid size-12 place-items-center rounded-[11px] bg-sea-50 text-sea">
+            <CalendarXIcon className="size-5" />
+          </span>
           <p className="font-semibold">Nenhum agendamento por aqui</p>
           <p className="mt-1 text-sm text-muted-foreground">
             Compartilhe seu link para começar a receber agendamentos.
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-xl border bg-card">
+        <div className="overflow-hidden rounded-[13px] border bg-card">
           {[...groups.entries()].map(([day, list]) => (
-            <section key={day}>
-              <h2 className="border-b bg-muted/60 px-5 py-2.5 text-sm font-semibold first-letter:uppercase">
+            <section key={day} className="not-first:border-t">
+              <h2 className="border-b px-[19px] py-4 text-base font-semibold text-primary first-letter:uppercase dark:text-foreground">
                 {formatInTz(list[0].startsAt, user.timezone, "EEEE, d 'de' MMMM 'de' yyyy")}
               </h2>
-              <ul className="divide-y">
+              <ul className="divide-y divide-line-soft">
                 {list.map((b) => (
                   <BookingRow key={b.id} timezone={user.timezone} booking={toView(b)} />
                 ))}

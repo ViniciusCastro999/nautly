@@ -126,7 +126,7 @@ export function TreatmentsPanel({
 
   return (
     <div className="grid gap-4">
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border bg-card p-5">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-[13px] border bg-card p-5">
         <div className="flex items-start gap-3">
           <ClipboardCheckIcon className="mt-0.5 size-5 text-primary" />
           <div>
@@ -137,22 +137,22 @@ export function TreatmentsPanel({
           </div>
         </div>
         {canWrite && !creating && (
-          <Button className="rounded-full" onClick={() => setCreating(true)}>
+          <Button onClick={() => setCreating(true)}>
             <PlusIcon /> Novo plano
           </Button>
         )}
       </div>
 
       {creating && (
-        <form onSubmit={create} className="flex flex-wrap items-end gap-3 rounded-xl border bg-card p-5">
+        <form onSubmit={create} className="flex flex-wrap items-end gap-3 rounded-[13px] border bg-card p-5">
           <div className="grid min-w-60 flex-1 gap-2">
             <Label htmlFor="plan-title">Título do plano</Label>
             <Input id="plan-title" value={title} onChange={(e) => setTitle(e.target.value)} autoFocus />
           </div>
-          <Button type="button" variant="outline" className="rounded-full" onClick={() => setCreating(false)}>
+          <Button type="button" variant="outline" onClick={() => setCreating(false)}>
             Cancelar
           </Button>
-          <Button type="submit" className="rounded-full" disabled={pending}>
+          <Button type="submit" disabled={pending}>
             {pending && <Loader2Icon className="animate-spin" />}
             Criar plano
           </Button>
@@ -160,7 +160,7 @@ export function TreatmentsPanel({
       )}
 
       {plans.length === 0 && !creating && (
-        <p className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">
+        <p className="rounded-[13px] border border-dashed p-8 text-center text-sm text-muted-foreground">
           Nenhum plano de tratamento ainda.
         </p>
       )}
@@ -231,7 +231,7 @@ function PlanCard({
   }
 
   return (
-    <section className="overflow-hidden rounded-xl border bg-card">
+    <section className="overflow-hidden rounded-[13px] border bg-card">
       <div className="flex flex-wrap items-start justify-between gap-3 border-b p-5">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
@@ -248,11 +248,11 @@ function PlanCard({
         </div>
         <div className="flex flex-wrap gap-1.5">
           {editable && (
-            <Button size="sm" variant="outline" className="rounded-full" onClick={() => setEditing(true)}>
+            <Button size="sm" variant="outline" onClick={() => setEditing(true)}>
               <PencilIcon /> Detalhes
             </Button>
           )}
-          <Button size="sm" variant="outline" className="rounded-full" asChild>
+          <Button size="sm" variant="outline" asChild>
             <a href={`/api/treatment-plans/${plan.id}/pdf`} target="_blank" rel="noopener">
               <FileDownIcon /> PDF
             </a>
@@ -375,11 +375,11 @@ function PlanCard({
           )}
           {plan.status === "presented" && (
             <>
-              <Button size="sm" className="rounded-full" onClick={copyLink}>
+              <Button size="sm" onClick={copyLink}>
                 <CopyIcon /> Copiar link
               </Button>
               {contactPhone && (
-                <Button size="sm" variant="outline" className="rounded-full" onClick={whatsapp}>
+                <Button size="sm" variant="outline" onClick={whatsapp}>
                   <MessageCircleIcon /> WhatsApp
                 </Button>
               )}
@@ -558,7 +558,7 @@ function AddItemForm({
           required={custom}
         />
       </div>
-      <Button type="submit" variant="secondary" className="rounded-full" disabled={pending || !procedureId}>
+      <Button type="submit" variant="secondary" disabled={pending || !procedureId}>
         {pending ? <Loader2Icon className="animate-spin" /> : <PlusIcon />}
         Adicionar
       </Button>
@@ -643,7 +643,7 @@ function PlanDetailsDialog({
             >
               Cancelar
             </Button>
-            <Button type="submit" className="rounded-full" disabled={pending}>
+            <Button type="submit" disabled={pending}>
               {pending && <Loader2Icon className="animate-spin" />}
               Salvar
             </Button>

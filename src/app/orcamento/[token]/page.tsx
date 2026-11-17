@@ -21,7 +21,7 @@ export default async function PublicBudgetPage({ params }: PageProps<"/orcamento
 
   return (
     <PublicShell>
-      <div className="w-full max-w-2xl rounded-2xl border bg-card p-6 shadow-[0_1px_8px_rgba(0,0,0,0.08)] sm:p-10 dark:shadow-none">
+      <div className="w-full max-w-2xl rounded-[16px] border bg-card p-6 shadow-[0_1px_8px_rgba(0,0,0,0.08)] sm:p-10 dark:shadow-none">
         <p className="text-sm font-semibold text-muted-foreground">{plan.organization.name}</p>
         <h1 className="mt-1 text-2xl font-bold">{plan.title}</h1>
         <p className="mt-2 text-muted-foreground">
@@ -29,7 +29,7 @@ export default async function PublicBudgetPage({ params }: PageProps<"/orcamento
           {budget.validUntil && `, válido até ${budget.validUntil}`}.
         </p>
 
-        <ul className="mt-6 divide-y rounded-xl border">
+        <ul className="mt-6 divide-y rounded-[13px] border">
           {budget.items.map((item, i) => (
             <li key={i} className="flex items-start justify-between gap-4 px-4 py-3">
               <div>
@@ -61,7 +61,7 @@ export default async function PublicBudgetPage({ params }: PageProps<"/orcamento
         </dl>
 
         {plan.notes && (
-          <div className="mt-6 rounded-xl bg-muted/50 p-4 text-sm">
+          <div className="mt-6 rounded-[13px] bg-muted/50 p-4 text-sm">
             <p className="mb-1 font-semibold">Observações</p>
             <p className="whitespace-pre-line text-muted-foreground">{plan.notes}</p>
           </div>
@@ -86,7 +86,7 @@ export default async function PublicBudgetPage({ params }: PageProps<"/orcamento
         </div>
 
         <div className="mt-6 flex justify-center">
-          <Button asChild variant={answered ? "default" : "outline"} className="rounded-full">
+          <Button asChild variant={answered ? "default" : "outline"}>
             <a href={`/orcamento/${token}/pdf`} target="_blank" rel="noopener">
               <FileDownIcon /> Baixar PDF
             </a>
@@ -109,7 +109,7 @@ function Status({
   children: React.ReactNode
 }) {
   return (
-    <div className="flex flex-col items-center rounded-xl border p-6 text-center">
+    <div className="flex flex-col items-center rounded-[13px] border p-6 text-center">
       <Icon className={`mb-2 size-9 ${tone}`} />
       <p className="text-lg font-semibold">{title}</p>
       <p className="mt-1 text-sm text-muted-foreground">{children}</p>
