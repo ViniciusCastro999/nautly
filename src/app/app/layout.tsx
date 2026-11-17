@@ -8,8 +8,7 @@ import { APP_DOMAIN } from "@/lib/constants"
 import { requireWorkspace } from "@/lib/session"
 
 export default async function AppLayout({ children }: LayoutProps<"/app">) {
-  const { user, org, vertical, vocab, can } = await requireWorkspace()
-  const canSettings = can("settings:manage")
+  const { user, org, vertical, vocab } = await requireWorkspace()
 
   const home: NavItem = { href: "/app", label: "Início", icon: "home", exact: true }
   const agenda: NavItem = { href: "/app/bookings", label: "Agenda", icon: "calendar" }
@@ -23,11 +22,8 @@ export default async function AppLayout({ children }: LayoutProps<"/app">) {
     agenda,
     clients,
     { href: "/app/event-types", label: "Serviços", icon: "services" },
-    { href: "/app/availability", label: "Disponibilidade", icon: "clock" },
   ]
-  const bottom: NavItem[] = canSettings
-    ? [{ href: "/app/settings", label: "Configurações", icon: "settings" }]
-    : []
+  const bottom: NavItem[] = [{ href: "/app/settings", label: "Configurações", icon: "settings" }]
   const subtitle = org.kind === "clinic" ? org.name : vertical.label
 
   return (
@@ -58,7 +54,6 @@ export default async function AppLayout({ children }: LayoutProps<"/app">) {
               email={user.email}
               username={user.username ?? ""}
               subtitle={subtitle}
-              canManageSettings={canSettings}
             />
           </div>
         </header>

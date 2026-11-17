@@ -100,7 +100,7 @@ export function DocumentsPanel({
           <AlertTriangleIcon className="mt-0.5 size-4 shrink-0 text-amber-600" />
           <span>
             Recibos para reembolso precisam do seu CPF ou CNPJ e do endereço do consultório.{" "}
-            <Link href="/app/settings" className="font-semibold text-primary hover:underline">
+            <Link href="/app/settings/profile" className="font-semibold text-primary hover:underline">
               Completar em Configurações
             </Link>
           </span>

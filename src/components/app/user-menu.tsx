@@ -22,14 +22,12 @@ export function UserMenu({
   email,
   username,
   subtitle,
-  canManageSettings = false,
   compact = false,
 }: {
   name: string
   email: string
   username: string
   subtitle?: string
-  canManageSettings?: boolean
   /** Só o avatar (barra superior no celular). */
   compact?: boolean
 }) {
@@ -65,13 +63,11 @@ export function UserMenu({
             <ExternalLinkIcon /> Minha página pública
           </Link>
         </DropdownMenuItem>
-        {canManageSettings && (
-          <DropdownMenuItem asChild>
-            <Link href="/app/settings">
-              <SettingsIcon /> Configurações
-            </Link>
-          </DropdownMenuItem>
-        )}
+        <DropdownMenuItem asChild>
+          <Link href="/app/settings">
+            <SettingsIcon /> Configurações
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onSelect={async () => {

@@ -68,6 +68,6 @@ export async function saveAvailability(input: AvailabilityInput) {
     }
   })
 
-  revalidatePath("/app/availability")
+  revalidatePath("/app/settings/availability")
   return { ok: true as const }
 }

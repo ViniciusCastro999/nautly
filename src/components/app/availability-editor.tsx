@@ -71,7 +71,7 @@ export function AvailabilityEditor(props: { timezone: string; rules: Rule[]; blo
   }
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
+    <div className="grid gap-6 xl:grid-cols-[1fr_340px]">
       <Card>
         <CardHeader>
           <CardTitle>Horários semanais</CardTitle>

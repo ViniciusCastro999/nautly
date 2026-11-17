@@ -52,7 +52,7 @@ export async function saveProcedure(input: z.input<typeof procedureSchema>) {
   } else {
     await db.insert(schema.procedure).values({ organizationId: ctx.org.id, ...values })
   }
-  revalidatePath("/app/settings")
+  revalidatePath("/app/settings/procedures")
   return { ok: true as const }
 }
 
@@ -63,6 +63,6 @@ export async function setProcedureActive(id: string, isActive: boolean) {
     .update(schema.procedure)
     .set({ isActive })
     .where(and(eq(schema.procedure.id, id), eq(schema.procedure.organizationId, ctx.org.id)))
-  revalidatePath("/app/settings")
+  revalidatePath("/app/settings/procedures")
   return { ok: true as const }
 }
