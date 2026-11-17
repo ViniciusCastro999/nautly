@@ -1,9 +1,11 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useRef, useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import {
+  CheckCircle2Icon,
+  CircleDashedIcon,
   DownloadIcon,
   EyeIcon,
   FileIcon,
@@ -18,6 +20,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
+import { setExamReviewed } from "@/server/clinical"
 
 type FileRow = {
   id: string
@@ -28,6 +31,8 @@ type FileRow = {
   description: string | null
   uploadedBy: string
   createdAt: string
+  /** Só exames: data da revisão, ou nulo se ainda não revisado. */
+  reviewedAt: string | null
 }
 
 const CATEGORY_LABELS: Record<FileRow["category"], string> = {
@@ -188,6 +193,9 @@ export function AttachmentsPanel({
                   </div>
                   <Badge variant="secondary">{CATEGORY_LABELS[f.category]}</Badge>
                 </div>
+                {f.category === "exam" && (
+                  <ExamReview id={f.id} reviewedAt={f.reviewedAt} canWrite={canWrite} />
+                )}
                 {f.description && <p className="mt-3 text-sm text-muted-foreground">{f.description}</p>}
                 <div className="mt-auto flex gap-2 pt-4">
                   <Button asChild variant="outline" size="sm" className="flex-1">
@@ -205,6 +213,61 @@ export function AttachmentsPanel({
             )
           })}
         </ul>
+      )}
+    </div>
+  )
+}
+
+function ExamReview({
+  id,
+  reviewedAt,
+  canWrite,
+}: {
+  id: string
+  reviewedAt: string | null
+  canWrite: boolean
+}) {
+  const router = useRouter()
+  const [pending, startTransition] = useTransition()
+  const reviewed = reviewedAt !== null
+
+  function toggle() {
+    startTransition(async () => {
+      const res = await setExamReviewed(id, !reviewed)
+      if (!res.ok) toast.error(res.error)
+      else {
+        toast.success(reviewed ? "Exame marcado como pendente" : "Exame revisado")
+        router.refresh()
+      }
+    })
+  }
+
+  return (
+    <div
+      className={cn(
+        "mt-3 flex items-center justify-between gap-2 rounded-[9px] px-3 py-2 text-[13px] font-semibold",
+        reviewed ? "bg-ok-50 text-ok" : "bg-warm-50 text-warm-foreground",
+      )}
+    >
+      <span className="flex items-center gap-1.5">
+        {reviewed ? <CheckCircle2Icon className="size-4" /> : <CircleDashedIcon className="size-4" />}
+        {reviewed ? `Revisado em ${reviewedAt}` : "Para revisar"}
+      </span>
+      {canWrite && (
+        <button
+          type="button"
+          disabled={pending}
+          onClick={toggle}
+          className="text-xs underline-offset-2 hover:underline disabled:opacity-60"
+        >
+          {pending ? (
+            <Loader2Icon className="size-3.5 animate-spin" />
+          ) : reviewed ? (
+            "Desfazer"
+          ) : (
+            "Marcar como revisado"
+          )}
+        </button>
       )}
     </div>
   )

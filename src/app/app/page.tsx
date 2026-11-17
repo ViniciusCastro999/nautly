@@ -8,6 +8,7 @@ import {
   ChevronRightIcon,
   ClipboardCheckIcon,
   Clock3Icon,
+  FileTextIcon,
   LinkIcon,
   UsersIcon,
   WalletIcon,
@@ -23,6 +24,7 @@ import { db, schema } from "@/db"
 import { calendarRange } from "@/lib/calendar"
 import { APP_DOMAIN } from "@/lib/constants"
 import { formatBRL } from "@/lib/documents/money"
+import { financePeriod } from "@/lib/finance"
 import { formatInTz, initials } from "@/lib/format"
 import { requireWorkspace } from "@/lib/session"
 import { cn } from "@/lib/utils"
@@ -96,6 +98,26 @@ export default async function HomePage() {
         : [],
     ])
 
+  const showFinance = ctx.can("finance:manage")
+  const [finance, [examsToReview]] = await Promise.all([
+    showFinance ? financePeriod(org.id, month) : null,
+    ctx.canUseModule("attachments")
+      ? db
+          .select({ n: count() })
+          .from(schema.attachment)
+          .where(
+            and(
+              eq(schema.attachment.organizationId, org.id),
+              eq(schema.attachment.category, "exam"),
+              isNull(schema.attachment.reviewedAt),
+            ),
+          )
+      : [null],
+  ])
+  const received = finance?.payments.reduce((s, p) => s + p.amountCents, 0) ?? 0
+  const overdue = finance?.unpaid.filter((b) => b.startsAt < now) ?? []
+  const attention = pending.n + (examsToReview?.n ?? 0) + overdue.length
+
   const done = todayList.filter((b) => b.endsAt < now).length
   const upcomingToday = todayList.find((b) => b.endsAt > now)
   const apptLower = vocab.appointments.toLowerCase()
@@ -160,13 +182,23 @@ export default async function HomePage() {
           value={weekCount.n}
           foot={`${vocab.appointments} confirmados`}
         />
-        <Metric
-          icon={WalletIcon}
-          label={`Previsto em ${monthName}`}
-          value={formatBRL(revenue.cents)}
-          currency
-          foot="Pelo valor de cada serviço"
-        />
+        {showFinance ? (
+          <Metric
+            icon={WalletIcon}
+            label={`Recebido em ${monthName}`}
+            value={formatBRL(received)}
+            currency
+            foot={`Previsto: ${formatBRL(revenue.cents)}`}
+          />
+        ) : (
+          <Metric
+            icon={WalletIcon}
+            label={`Previsto em ${monthName}`}
+            value={formatBRL(revenue.cents)}
+            currency
+            foot="Pelo valor de cada serviço"
+          />
+        )}
       </div>
 
       <div className="grid gap-[17px] xl:grid-cols-[minmax(0,1.62fr)_minmax(300px,0.88fr)]">
@@ -306,11 +338,11 @@ export default async function HomePage() {
           <section className="rounded-[13px] border bg-card">
             <CardHead
               title="Pendências"
-              subtitle={pending.n > 0 ? "Itens que precisam da sua atenção" : "Tudo em dia"}
+              subtitle={attention > 0 ? "Itens que precisam da sua atenção" : "Tudo em dia"}
               action={
-                pending.n > 0 && (
+                attention > 0 && (
                   <span className="grid size-[23px] place-items-center rounded-full bg-warm-50 text-[13px] text-warm-foreground">
-                    {pending.n}
+                    {attention}
                   </span>
                 )
               }
@@ -326,6 +358,24 @@ export default async function HomePage() {
               }
               hint={`${vocab.appointments} que já passaram`}
             />
+            {examsToReview && examsToReview.n > 0 && (
+              <PendingLink
+                href="/app/exams"
+                icon={FileTextIcon}
+                tone="warm"
+                title={`${examsToReview.n} ${examsToReview.n === 1 ? "exame" : "exames"} para revisar`}
+                hint={`Laudos anexados às fichas`}
+              />
+            )}
+            {overdue.length > 0 && (
+              <PendingLink
+                href="/app/finance"
+                icon={WalletIcon}
+                tone="warm"
+                title={`${overdue.length} ${overdue.length === 1 ? "pagamento" : "pagamentos"} em atraso`}
+                hint={`${formatBRL(overdue.reduce((s, b) => s + b.priceCents, 0))} de ${vocab.appointments.toLowerCase()} já realizados`}
+              />
+            )}
             <PendingLink
               href="/app/event-types"
               icon={LinkIcon}

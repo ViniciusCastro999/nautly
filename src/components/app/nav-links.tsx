@@ -5,11 +5,13 @@ import { usePathname } from "next/navigation"
 import {
   CalendarDaysIcon,
   Clock3Icon,
+  FileTextIcon,
   HeartPulseIcon,
   HouseIcon,
   LayersIcon,
   SettingsIcon,
   UsersIcon,
+  WalletIcon,
   type LucideIcon,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -22,6 +24,8 @@ export const NAV_ICONS = {
   users: UsersIcon,
   patients: HeartPulseIcon,
   settings: SettingsIcon,
+  exams: FileTextIcon,
+  finance: WalletIcon,
 } satisfies Record<string, LucideIcon>
 
 export type NavItem = {

@@ -8,7 +8,7 @@ import { APP_DOMAIN } from "@/lib/constants"
 import { requireWorkspace } from "@/lib/session"
 
 export default async function AppLayout({ children }: LayoutProps<"/app">) {
-  const { user, org, vertical, vocab } = await requireWorkspace()
+  const { user, org, vertical, vocab, can, canUseModule } = await requireWorkspace()
 
   const home: NavItem = { href: "/app", label: "Início", icon: "home", exact: true }
   const agenda: NavItem = { href: "/app/bookings", label: "Agenda", icon: "calendar" }
@@ -21,6 +21,10 @@ export default async function AppLayout({ children }: LayoutProps<"/app">) {
     home,
     agenda,
     clients,
+    ...(canUseModule("attachments") ? [{ href: "/app/exams", label: "Exames", icon: "exams" } as const] : []),
+    ...(can("finance:manage")
+      ? [{ href: "/app/finance", label: "Financeiro", icon: "finance" } as const]
+      : []),
     { href: "/app/event-types", label: "Serviços", icon: "services" },
   ]
   const bottom: NavItem[] = [{ href: "/app/settings", label: "Configurações", icon: "settings" }]

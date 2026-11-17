@@ -21,6 +21,8 @@ export type Permission =
   | "clinical:write"
   | "settings:manage"
   | "audit:read"
+  /** Financeiro: pagamentos e valores a receber. */
+  | "finance:manage"
 
 const PERMISSIONS: Record<Role, readonly Permission[]> = {
   owner: [
@@ -31,11 +33,19 @@ const PERMISSIONS: Record<Role, readonly Permission[]> = {
     "clinical:write",
     "settings:manage",
     "audit:read",
+    "finance:manage",
   ],
   // Administrador da clínica: gestão, sem acesso a dados clínicos.
-  admin: ["agenda:manage", "clients:read", "clients:write", "settings:manage", "audit:read"],
+  admin: [
+    "agenda:manage",
+    "clients:read",
+    "clients:write",
+    "settings:manage",
+    "audit:read",
+    "finance:manage",
+  ],
   professional: ["agenda:manage", "clients:read", "clients:write", "clinical:read", "clinical:write"],
-  receptionist: ["agenda:manage", "clients:read", "clients:write"],
+  receptionist: ["agenda:manage", "clients:read", "clients:write", "finance:manage"],
 }
 
 export function can(role: Role, permission: Permission) {

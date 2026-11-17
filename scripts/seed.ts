@@ -308,7 +308,57 @@ async function main() {
     storageKey,
     category: "exam",
     description: "Hemograma solicitado na consulta inicial",
+    reviewedAt: pastBookings[0].endsAt,
+    reviewedById: user.id,
   })
+
+  // Exame recém-enviado, ainda sem revisão (aparece em Exames e nas pendências).
+  const lipid = simplePdf([
+    "Laboratorio Exemplo - Perfil lipidico",
+    "Paciente: Pedro Alves",
+    "Colesterol total: 212 mg/dL (desejavel < 190)",
+    "HDL: 44 mg/dL (desejavel > 40)",
+    "LDL: 138 mg/dL (desejavel < 130)",
+    "Triglicerides: 150 mg/dL (desejavel < 150)",
+    "Documento ficticio gerado para demonstracao.",
+  ])
+  const lipidKey = `${orgId}/${crypto.randomUUID()}`
+  await storage.put(lipidKey, lipid)
+  await db.insert(schema.attachment).values({
+    organizationId: orgId,
+    contactId: contacts[3].id,
+    uploadedById: user.id,
+    fileName: "perfil-lipidico.pdf",
+    mimeType: "application/pdf",
+    sizeBytes: lipid.length,
+    storageKey: lipidKey,
+    category: "exam",
+    description: "Enviado para o retorno",
+  })
+
+  // Financeiro: os dois primeiros atendimentos pagos, os outros ficam em atraso.
+  const priceOf = new Map([consulta, retorno, avaliacao].map((et) => [et.id, et.priceCents ?? 0]))
+  const paidBookings = bookings.filter((b) => b.startsAt < new Date() && b.status === "confirmed").slice(0, 2)
+  await db.insert(schema.payment).values([
+    ...paidBookings.map((b, i) => ({
+      organizationId: orgId,
+      contactId: b.contactId,
+      bookingId: b.id,
+      amountCents: priceOf.get(b.eventTypeId) || 18_000,
+      method: i === 0 ? ("pix" as const) : ("card" as const),
+      paidAt: b.endsAt,
+      createdById: user.id,
+    })),
+    {
+      organizationId: orgId,
+      contactId: contacts[1].id,
+      amountCents: 60_000,
+      method: "transfer" as const,
+      paidAt: businessDay(-5, 18),
+      description: "Pacote de 4 retornos",
+      createdById: user.id,
+    },
+  ])
 
   // Avaliações antropométricas: Pedro com 5 meses de evolução, Carla com a primeira.
   const daysAgo = (n: number) => formatInTz(new Date(Date.now() - n * 86_400_000), TZ, "yyyy-MM-dd")

@@ -95,3 +95,30 @@ export async function updateNote(id: string, content: string) {
   revalidatePath(`/app/contacts/${note.contactId}`)
   return { ok: true as const }
 }
+
+/** Marca (ou desmarca) um exame como revisado pelo profissional. */
+export async function setExamReviewed(id: string, reviewed: boolean) {
+  const ctx = await requireWorkspace()
+  if (!ctx.hasModule("attachments") || !ctx.can("clinical:write")) {
+    return { ok: false as const, error: "Sem permissão para revisar exames." }
+  }
+  const [row] = await db
+    .update(schema.attachment)
+    .set(
+      reviewed
+        ? { reviewedAt: new Date(), reviewedById: ctx.user.id }
+        : { reviewedAt: null, reviewedById: null },
+    )
+    .where(
+      and(
+        eq(schema.attachment.id, id),
+        eq(schema.attachment.organizationId, ctx.org.id),
+        eq(schema.attachment.category, "exam"),
+      ),
+    )
+    .returning({ contactId: schema.attachment.contactId })
+  if (!row) return { ok: false as const, error: "Exame não encontrado." }
+  revalidatePath(`/app/contacts/${row.contactId}`)
+  revalidatePath("/app/exams")
+  return { ok: true as const }
+}

@@ -481,6 +481,7 @@ async function AttachmentsTab(props: {
         description: f.description,
         uploadedBy: f.uploadedBy.name,
         createdAt: formatInTz(f.createdAt, props.timezone, "dd/MM/yyyy"),
+        reviewedAt: f.reviewedAt ? formatInTz(f.reviewedAt, props.timezone, "dd/MM/yyyy") : null,
       }))}
     />
   )

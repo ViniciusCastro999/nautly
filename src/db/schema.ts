@@ -367,9 +367,50 @@ export const attachment = pgTable(
     storageKey: text("storage_key").notNull(),
     category: attachmentCategory("category").notNull().default("other"),
     description: text("description"),
+    /** Exames: quando o profissional conferiu o laudo. Nulo = para revisar. */
+    reviewedAt: timestamp("reviewed_at", { withTimezone: true }),
+    reviewedById: text("reviewed_by_id").references(() => user.id, { onDelete: "set null" }),
     createdAt: createdAt(),
   },
   (t) => [index("attachment_contact_idx").on(t.contactId, t.createdAt)],
+)
+
+/* -------------------------------------------------------------------------- */
+/*                                 Financeiro                                 */
+/* -------------------------------------------------------------------------- */
+
+export const paymentMethod = pgEnum("payment_method", ["pix", "card", "cash", "transfer", "other"])
+
+/**
+ * Pagamento recebido. Pode estar ligado a um atendimento (um pagamento por
+ * atendimento) ou ser avulso. Atendimentos com valor e sem pagamento ficam
+ * "a receber" ou "em atraso" no Financeiro.
+ */
+export const payment = pgTable(
+  "payment",
+  {
+    id: id(),
+    organizationId: text("organization_id")
+      .notNull()
+      .references(() => organization.id, { onDelete: "cascade" }),
+    contactId: text("contact_id")
+      .notNull()
+      .references(() => contact.id, { onDelete: "cascade" }),
+    bookingId: text("booking_id").references(() => booking.id, { onDelete: "set null" }),
+    amountCents: integer("amount_cents").notNull(),
+    method: paymentMethod("method").notNull().default("pix"),
+    paidAt: timestamp("paid_at", { withTimezone: true }).notNull(),
+    description: text("description"),
+    createdById: text("created_by_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "restrict" }),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    uniqueIndex("payment_booking_uq").on(t.bookingId),
+    index("payment_org_paid_idx").on(t.organizationId, t.paidAt),
+    index("payment_contact_idx").on(t.contactId),
+  ],
 )
 
 export const accessAction = pgEnum("access_action", [
@@ -673,6 +714,7 @@ export const contactRelations = relations(contact, ({ one, many }) => ({
   documents: many(issuedDocument),
   teeth: many(toothRecord),
   treatmentPlans: many(treatmentPlan),
+  payments: many(payment),
 }))
 
 export const toothRecordRelations = relations(toothRecord, ({ one }) => ({
@@ -733,6 +775,11 @@ export const attachmentRelations = relations(attachment, ({ one }) => ({
 export const accessLogRelations = relations(accessLog, ({ one }) => ({
   user: one(user, { fields: [accessLog.userId], references: [user.id] }),
   contact: one(contact, { fields: [accessLog.contactId], references: [contact.id] }),
+}))
+
+export const paymentRelations = relations(payment, ({ one }) => ({
+  contact: one(contact, { fields: [payment.contactId], references: [contact.id] }),
+  booking: one(booking, { fields: [payment.bookingId], references: [booking.id] }),
 }))
 
 export const bookingRelations = relations(booking, ({ one }) => ({
