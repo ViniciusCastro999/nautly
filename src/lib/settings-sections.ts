@@ -2,7 +2,7 @@ import type { requireWorkspace } from "@/lib/session"
 
 type Workspace = Awaited<ReturnType<typeof requireWorkspace>>
 
-export type SettingsIcon = "profile" | "availability" | "integrations" | "features" | "procedures" | "team"
+export type SettingsIcon = "profile" | "availability" | "integrations" | "features" | "team"
 
 export type SettingsSection = {
   href: string
@@ -40,13 +40,6 @@ export function settingsSections(ws: Pick<Workspace, "org" | "can" | "hasModule"
       description: "Ative ou desative as ferramentas do painel.",
       icon: "features",
     },
-    manage &&
-      ws.hasModule("treatment_plan") && {
-        href: "/app/settings/procedures",
-        label: "Procedimentos",
-        description: "Catálogo e preços usados nos orçamentos.",
-        icon: "procedures",
-      },
     manage && {
       href: "/app/settings/team",
       label: isClinic ? "Equipe" : "Acesso",

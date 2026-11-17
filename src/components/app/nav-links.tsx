@@ -8,6 +8,7 @@ import {
   FileTextIcon,
   HeartPulseIcon,
   HouseIcon,
+  ListChecksIcon,
   LayersIcon,
   SettingsIcon,
   UsersIcon,
@@ -26,6 +27,7 @@ export const NAV_ICONS = {
   settings: SettingsIcon,
   exams: FileTextIcon,
   finance: WalletIcon,
+  procedures: ListChecksIcon,
 } satisfies Record<string, LucideIcon>
 
 export type NavItem = {

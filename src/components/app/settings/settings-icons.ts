@@ -2,7 +2,6 @@ import {
   CalendarClockIcon,
   CalendarSyncIcon,
   LayoutGridIcon,
-  ListChecksIcon,
   UserRoundIcon,
   UsersIcon,
   type LucideIcon,
@@ -14,6 +13,5 @@ export const SETTINGS_ICONS: Record<SettingsIcon, LucideIcon> = {
   availability: CalendarClockIcon,
   integrations: CalendarSyncIcon,
   features: LayoutGridIcon,
-  procedures: ListChecksIcon,
   team: UsersIcon,
 }
