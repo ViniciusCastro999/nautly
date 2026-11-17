@@ -261,7 +261,7 @@ Abra http://localhost:3000.
 
 ### Em produção
 
-O site em https://nautly.vercel.app roda na Vercel, com banco Postgres no Neon e anexos no Vercel Blob (modo privado). Cada push na `main` publica uma nova versão. Variáveis necessárias: `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `DATA_ENCRYPTION_KEY` e `BLOB_STORE_ID` (criada pela integração do Blob).
+O site em https://nautly.vercel.app roda na Vercel, com banco Postgres no Neon e anexos no Vercel Blob (modo privado). Cada push na `main` publica uma nova versão. Variáveis necessárias: `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `DATA_ENCRYPTION_KEY` e `BLOB_STORE_ID` (criada pela integração do Blob). As migrações do banco rodam sozinhas em cada deploy, antes do build ([`vercel.json`](vercel.json)).
 
 ## Estrutura
 
